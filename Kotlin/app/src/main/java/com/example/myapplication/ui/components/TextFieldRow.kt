@@ -1,14 +1,12 @@
 package com.example.myapplication.ui.components
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
+
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -27,9 +25,12 @@ fun TextFieldRow(values: SnapshotStateList<String>, labels: List<String> = empty
                         viewModel.updateColor(labels.joinToString(""))
                     }
                 },
-                label = { Text(labels.getOrNull(index) ?: "TextField ${index + 1}") },
+                label = { Text(getLabel(labels, index)) },
                 modifier = Modifier.weight(1f).padding(4.dp),
-                singleLine = true
+                singleLine = true,
+                suffix = { Text(getSuffix(label)) },
+                prefix = { Text(getPrefix(label)) }
+
             )
         }
     }
@@ -37,10 +38,32 @@ fun TextFieldRow(values: SnapshotStateList<String>, labels: List<String> = empty
 
 fun isValidInput(label: String, input: String): Boolean {
     return when (label) {
-        "R", "G", "B" -> input.toIntOrNull()?.let { it in 0..255 } ?: false
-        "H" -> input.removeSuffix("°").toDoubleOrNull()?.let { it in 0.0..360.0 } ?: false
-        "S", "V", "C", "M", "Y", "K" -> input.removeSuffix("%").toDoubleOrNull()?.let { it in 0.0..100.0 } ?: false
-        "HEX" -> input.matches(Regex("^#([A-Fa-f0-9]{6})$"))
+        "R", "G", "B" -> input.isBlank() || input.toIntOrNull()?.let { it in 0..255 } ?: false
+        "H" -> input.isBlank() || input.toDoubleOrNull()?.let { it in 0.0..360.0 } ?: false
+        "S", "V", "C", "M", "Y", "K" -> input.isBlank() || input.toDoubleOrNull()?.let { it in 0.0..100.0 } ?: false
+        "HEX" -> input.matches(Regex("^[A-Fa-f0-9]{0,6}$"))
         else -> true
+    }
+}
+
+@Composable
+fun getLabel(labels: List<String>, index: Int): String {
+    return labels.getOrNull(index) ?: "TextField ${index + 1}"
+}
+
+@Composable
+fun getPrefix(label: String): String {
+    return when (label) {
+        "HEX" -> "#"
+        else -> ""
+    }
+}
+
+@Composable
+fun getSuffix(label: String): String {
+    return when (label) {
+        "H" -> "°"
+        "S", "V", "C", "M", "Y", "K" -> "%"
+        else -> ""
     }
 }

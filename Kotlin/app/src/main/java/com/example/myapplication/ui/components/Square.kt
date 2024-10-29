@@ -14,9 +14,9 @@ import com.example.myapplication.MainViewModel
 @Composable
 fun Square(viewModel: MainViewModel) {
     val hex = viewModel.hexFieldValues[0]
-    val r = hex.substring(1, 3).toInt(16)
-    val g = hex.substring(3, 5).toInt(16)
-    val b = hex.substring(5, 7).toInt(16)
+    val r = if (hex.length >= 2) hex.substring(0, 2).toInt(16) else 0
+    val g = if (hex.length >= 4) hex.substring(2, 4).toInt(16) else 0
+    val b = if (hex.length >= 6) hex.substring(4, 6).toInt(16) else 0
     val alpha = 0xFF
     Card (
         modifier = Modifier

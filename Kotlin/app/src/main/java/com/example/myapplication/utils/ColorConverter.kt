@@ -1,10 +1,11 @@
 package com.example.myapplication.utils
 
+import android.annotation.SuppressLint
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 
-
+@SuppressLint("DefaultLocale")
 class ColorConverter {
     companion object {
         fun rgbToHsv(r: Int, g: Int, b: Int): List<String> {
@@ -33,25 +34,28 @@ class ColorConverter {
             )
         }
 
+
         fun rgbToCmyk(r: Int, g: Int, b: Int): List<String> {
             val rp = r / 255.0
             val gp = g / 255.0
             val bp = b / 255.0
             val k = 1 - max(rp, max(gp, bp))
+            if (k == 1.0) {
+                return listOf("0", "0", "0", "100")
+            }
             val c = (1 - rp - k) / (1 - k)
             val m = (1 - gp - k) / (1 - k)
             val y = (1 - bp - k) / (1 - k)
             return listOf(
-                String.format("%.2f", c * 100),
-                String.format("%.2f", m * 100),
-                String.format("%.2f", y * 100),
-                String.format("%.2f", k * 100)
+                String.format("%.2f", c * 100).removeTrailingZeros(),
+                String.format("%.2f", m * 100).removeTrailingZeros(),
+                String.format("%.2f", y * 100).removeTrailingZeros(),
+                String.format("%.2f", k * 100).removeTrailingZeros()
             )
         }
 
         fun rgbToHex(r: Int, g: Int, b: Int): String {
-            var hex = "#"
-            hex += r.toString(16).padStart(2, '0')
+            var hex = r.toString(16).padStart(2, '0')
             hex += g.toString(16).padStart(2, '0')
             hex += b.toString(16).padStart(2, '0')
             return hex
@@ -82,11 +86,8 @@ class ColorConverter {
             return listOf(rp.toInt(), gp.toInt(), bp.toInt())
         }
 
-        fun hexToRgb(hex: String): List<Int> {
-            val r = hex.substring(1, 3).toInt(16)
-            val g = hex.substring(3, 5).toInt(16)
-            val b = hex.substring(5, 7).toInt(16)
-            return listOf(r, g, b)
+        private fun String.removeTrailingZeros(): String {
+            return this.replace(Regex("\\.?0*$"), "")
         }
     }
 }
