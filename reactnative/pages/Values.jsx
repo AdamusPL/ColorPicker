@@ -25,23 +25,6 @@ export default function Values() {
     //hex
     const [hex, setHex] = useState(0);
 
-    // function handleChange() {
-    //     let hsv = convertRGBToHSV(r, g, b);
-    //     let cmyk = convertRGBToCMYK(r, g, b);
-    //     let hex = convertRGBToHex(r, g, b);
-
-    //     setH(hsv.h);
-    //     setS(hsv.s);
-    //     setV(hsv.v);
-
-    //     setC(cmyk.c);
-    //     setM(cmyk.m);
-    //     setY(cmyk.y);
-    //     setK(cmyk.k);
-
-    //     setHex(hex);
-    // }
-
     function handleRGBChange(input, label) {
         let hsv = {};
         let cmyk = {};
