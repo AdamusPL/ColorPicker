@@ -43,52 +43,45 @@ export function convertHSVToRGB(h, sInput, vInput) {
     const gFinal = (gPrim + m) * 255;
     const bFinal = (bPrim + m) * 255;
 
-    // console.log(`r=${rFinal}g=${gFinal}b=${bFinal}`);
-
-    return { r: rFinal.toString(), g: gFinal.toString(), b: bFinal.toString() };
+    return { r: Math.round(rFinal).toString(), g: Math.round(gFinal).toString(), b: Math.round(bFinal).toString() };
 }
 
 export function convertCMYKToRGB(cInput, mInput, yInput, kInput) {
-    const c = cInput / 100 || 0;
-    const m = mInput / 100 || 0;
-    const y = yInput / 100 || 0;
-    const k = kInput / 100 || 0;
-
-    // console.log(`c=${c}m=${m}y=${y}k=${k}`);
+    const c = cInput / 100;
+    const m = mInput / 100;
+    const y = yInput / 100;
+    const k = kInput / 100;
 
     const rFinal = 255 * (1 - c) * (1 - k);
     const gFinal = 255 * (1 - m) * (1 - k);
     const bFinal = 255 * (1 - y) * (1 - k);
 
-    // console.log(`r=${rFinal}g=${gFinal}b=${bFinal}`);
-
-    return { r: rFinal.toString(), g: gFinal.toString(), b: bFinal.toString() };
+    return { r: Math.round(rFinal).toString(), g: Math.round(gFinal).toString(), b: Math.round(bFinal).toString() };
 }
 
 export function convertHexToRGB(hex) {
     const bigint = parseInt(hex, 16);
-    console.log(bigint);
     const r = (bigint >> 16) & 255;
     const g = (bigint >> 8) & 255;
     const b = bigint & 255;
-
-    // console.log(`r=${r}g=${g}b=${b}`);
 
     return { r: r.toString(), g: g.toString(), b: b.toString() };
 }
 
 export function convertRGBToHex(r, g, b) {
-    debugger;
     const rgb = (r << 16) | (g << 8) | (b << 0);
-    console.log((0x1000000 + rgb).toString(16).slice(1));
     return (0x1000000 + rgb).toString(16).slice(1);
 }
 
+function mod(a, n) {
+    return a - (n * Math.floor(a / n));
+}
+
 export function convertRGBToHSV(rInput, gInput, bInput) {
-    
-    const r = rInput / 255 || 0;
-    const g = gInput / 255 || 0;
-    const b = bInput / 255 || 0;
+
+    const r = rInput / 255;
+    const g = gInput / 255;
+    const b = bInput / 255;
 
     const Cmax = Math.max(r, g, b);
     const Cmin = Math.min(r, g, b);
@@ -101,7 +94,7 @@ export function convertRGBToHSV(rInput, gInput, bInput) {
         h = 0;
     }
     else if (Cmax === r) {
-        h = 60 * (((g - b) / delta) % 6);
+        h = 60 * (mod(((g - b) / delta), 6));
     }
     else if (Cmax === g) {
         h = 60 * ((b - r) / delta + 2);
@@ -121,18 +114,22 @@ export function convertRGBToHSV(rInput, gInput, bInput) {
     //v
     v = Cmax * 100;
 
-    return { h: h.toString(), s: s.toString(), v: v.toString() };
+    return { h: Math.round(h).toString(), s: Math.round(s).toString(), v: Math.round(v).toString() };
 }
 
 export function convertRGBToCMYK(rInput, gInput, bInput) {
-    const r = rInput / 255 || 0;
-    const g = gInput / 255 || 0;
-    const b = bInput / 255 || 0;
+    const r = rInput / 255;
+    const g = gInput / 255;
+    const b = bInput / 255;
 
-    const k = (1 - Math.max(r, g, b)) * 100;
-    const c = ((1 - r - k) / (1 - k)) * 100;
-    const m = ((1 - g - k) / (1 - k)) * 100;
-    const y = ((1 - b - k) / (1 - k)) * 100;
+    const k = (1 - Math.max(r, g, b));
 
-    return { c: c.toString(), m: m.toString(), y: y.toString(), k: k.toString() };
+    let c = 0, m = 0, y = 0;
+    if (1 - k != 0) {
+        c = ((1 - r - k) / (1 - k));
+        m = ((1 - g - k) / (1 - k));
+        y = ((1 - b - k) / (1 - k));
+    }
+
+    return { c: Math.round(c * 100).toString(), m: Math.round(m * 100).toString(), y: Math.round(y * 100).toString(), k: Math.round(k * 100).toString() };
 }
