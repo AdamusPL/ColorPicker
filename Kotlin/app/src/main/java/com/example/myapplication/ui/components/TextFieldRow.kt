@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.example.myapplication.MainViewModel
 
 @Composable
-fun TextFieldRow(values: SnapshotStateList<String>, labels: List<String> = emptyList(), viewModel: MainViewModel) {
+fun TextFieldRow(values: SnapshotStateList<String>, labels: List<String> = emptyList(), viewModel: MainViewModel, readOnly : Boolean = true) {
     Row(modifier = Modifier.fillMaxWidth()) {
         values.forEachIndexed { index, value ->
             val label = labels.getOrNull(index) ?: "TextField ${index + 1}"
@@ -29,8 +29,8 @@ fun TextFieldRow(values: SnapshotStateList<String>, labels: List<String> = empty
                 modifier = Modifier.weight(1f).padding(4.dp),
                 singleLine = true,
                 suffix = { Text(getSuffix(label)) },
-                prefix = { Text(getPrefix(label)) }
-
+                prefix = { Text(getPrefix(label)) },
+                readOnly = readOnly
             )
         }
     }

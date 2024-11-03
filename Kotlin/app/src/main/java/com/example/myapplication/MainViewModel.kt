@@ -11,6 +11,13 @@ class MainViewModel : ViewModel() {
     val cmykFieldValues: SnapshotStateList<String> = mutableStateListOf("0", "0", "0", "100")
     val hexFieldValues: SnapshotStateList<String> = mutableStateListOf("000000")
 
+    fun updateRGBValues(r: Int, g: Int, b: Int) {
+        rgbFieldValues[0] = r.toString()
+        rgbFieldValues[1] = g.toString()
+        rgbFieldValues[2] = b.toString()
+        updateColor("RGB")
+    }
+
     fun updateColor(hasChanged : String) {
         when (hasChanged) {
             "RGB" -> {
