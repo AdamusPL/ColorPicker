@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { BottomNavigation, Text } from 'react-native-paper';
 import Values from '../pages/Values';
-import Palette from '../pages/Palette';
+import PaletteChoice from '../pages/PaletteChoice';
 
 const ValuesRoute = () => <Values />;
 
-const PaletteRoute = () => <Palette />;
+const PaletteRoute = () => <PaletteChoice />;
 
 const Layout = () => {
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    { key: 'values', title: 'Values'},
-    { key: 'palette', title: 'Palette'},
+    { key: 'values', title: 'Values' },
+    { key: 'palette', title: 'Palette' },
   ]);
 
   const renderScene = BottomNavigation.SceneMap({
