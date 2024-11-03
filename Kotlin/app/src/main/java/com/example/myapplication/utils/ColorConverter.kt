@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.math.round
 
 @SuppressLint("DefaultLocale")
 class ColorConverter {
@@ -62,9 +63,11 @@ class ColorConverter {
         }
 
         fun hsvToRgb(h: Double, s: Double, v: Double): List<Int> {
-            val c = v * s
+            val ss = s/100
+            val vs = v/100
+            val c = vs * ss
             val x = c * (1 - abs((h / 60) % 2 - 1))
-            val m = v - c
+            val m = vs - c
             val (rp, gp, bp) = when {
                 h < 60 -> Triple(c, x, 0.0)
                 h < 120 -> Triple(x, c, 0.0)
@@ -73,9 +76,9 @@ class ColorConverter {
                 h < 300 -> Triple(x, 0.0, c)
                 else -> Triple(c, 0.0, x)
             }
-            val r = ((rp + m) * 255).toInt()
-            val g = ((gp + m) * 255).toInt()
-            val b = ((bp + m) * 255).toInt()
+            val r = round(((rp + m) * 255)).toInt()
+            val g = round(((gp + m) * 255)).toInt()
+            val b = round(((bp + m) * 255)).toInt()
             return listOf(r, g, b)
         }
 
@@ -83,7 +86,7 @@ class ColorConverter {
             val rp = 255 * (1 - c / 100.0) * (1 - k / 100.0)
             val gp = 255 * (1 - m / 100.0) * (1 - k / 100.0)
             val bp = 255 * (1 - y / 100.0) * (1 - k / 100.0)
-            return listOf(rp.toInt(), gp.toInt(), bp.toInt())
+            return listOf(round(rp).toInt(), round(gp).toInt(), round(bp).toInt())
         }
 
         private fun String.removeTrailingZeros(): String {
