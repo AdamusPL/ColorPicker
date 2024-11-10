@@ -1,7 +1,7 @@
 import 'dart:math';
 
 class ColorConverter {
-  static List<Double> rgbToHsv(int r, int g, int b) {
+  static List<String> rgbToHsv(int r, int g, int b) {
     double rp = r / 255.0;
     double gp = g / 255.0;
     double bp = b / 255.0;
