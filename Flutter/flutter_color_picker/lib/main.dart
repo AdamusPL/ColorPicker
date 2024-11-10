@@ -52,12 +52,14 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
 
-  static const List<Widget> _widgetOptions = <Widget>[
-    MainScreen(),
+  static final List<Widget> _widgetOptions = <Widget>[
+    const MainScreen(),
     TextFieldRow(
-      values: ['R', 'G', 'B'],
+      labels: ['R', 'G', 'B'],
       style: TextStyle(fontSize: 20),
       textFieldCount: 3,
+      getValue: (_) => '',
+      onValueChange: (_, __) => {},
     ),
   ];
 

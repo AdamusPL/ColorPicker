@@ -14,12 +14,7 @@ class _SquareState extends State<Square> {
   Widget build(BuildContext context) {
     ColorModel colorModel = Provider.of<ColorModel>(context);
 
-    Color squareColor = Color.fromRGBO(
-      int.parse(colorModel.rgb[0].isNotEmpty ? colorModel.rgb[0] : '0'),
-      int.parse(colorModel.rgb[1].isNotEmpty ? colorModel.rgb[1] : '0'), 
-      int.parse(colorModel.rgb[2].isNotEmpty ? colorModel.rgb[2] : '0'), 
-      1.0
-    );
+    Color squareColor = colorModel.rgb;
     return Padding(
         padding: const EdgeInsets.all(16),
         child: AspectRatio(
