@@ -73,17 +73,17 @@ class _MainScreenState extends State<MainScreen> {
                 }
               },
               onValueChange: (label, value) {
-                HSVColor hsvColor = HSVColor.fromColor(colorModel.rgb);
+                HSVColor hsvColor = HSVColor.fromAHSV(colorModel.hsv.alpha, colorModel.hsv.hue, colorModel.hsv.saturation, colorModel.hsv.value);
                 value = value.isEmpty ? '0' : value;
                 switch (label) {
                   case 'H':
                     hsvColor = hsvColor.withHue(double.parse(value));
                     break;
                   case 'S':
-                    hsvColor = hsvColor.withSaturation(double.parse(value));
+                    hsvColor = hsvColor.withSaturation(double.parse(value) / 100);
                     break;
                   case 'V':
-                    hsvColor = hsvColor.withValue(double.parse(value));
+                    hsvColor = hsvColor.withValue(double.parse(value) / 100);
                     break;
                 }
                 colorModel.setHSV(hsvColor);
@@ -107,7 +107,7 @@ class _MainScreenState extends State<MainScreen> {
               }
             },
             onValueChange: (label, value) {
-              CMYKColor cmykColor = CMYKColor.fromColor(colorModel.rgb);
+              CMYKColor cmykColor = CMYKColor(colorModel.cmyk.c, colorModel.cmyk.m, colorModel.cmyk.y, colorModel.cmyk.k);
               value = value.isEmpty ? '0' : value;
               switch (label) {
                 case 'C':
