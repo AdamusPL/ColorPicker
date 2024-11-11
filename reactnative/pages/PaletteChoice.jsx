@@ -1,13 +1,15 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { TextInput, Text } from 'react-native-paper';
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useState } from "react";
-import { convertHexToRGB, convertHSVToRGB, convertRGBToCMYK, convertRGBToHex, convertRGBToHSV, convertCMYKToRGB } from "./Calculator";
+import { convertRGBToCMYK, convertRGBToHex, convertRGBToHSV } from "./Calculator";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import Palette from "./Palette";
+import Canvas, { Image as CanvasImage } from 'react-native-canvas';
+import data from './color-palette.json'
 
 export default function PaletteChoice() {
-
+    const canvasRef = useRef(null);
+    const [isCanvasRendered, setIsCanvasRendered] = useState(false);
     const [selectedColor, setSelectedColor] = useState('rgb(255, 0, 0)');
 
     //r,g,b
@@ -28,6 +30,19 @@ export default function PaletteChoice() {
 
     //hex
     const [hex, setHex] = useState("000000");
+
+    useEffect(() => {
+        if (canvasRef.current && !isCanvasRendered) {
+            setIsCanvasRendered(true);
+            const ctx = canvasRef.current.getContext('2d');
+            let img = new CanvasImage(canvasRef.current);
+            img.src = data.COLOR_PALETTE;
+
+            img.addEventListener('load', () => {
+                ctx.drawImage(img, 0, 0, 200, 200);
+            });
+        }
+    }, [canvasRef, isCanvasRendered]);
 
     useEffect(() => {
         handleChange();
@@ -59,11 +74,61 @@ export default function PaletteChoice() {
         }
     }
 
+    function handleClick(e) {
+        if (!canvasRef.current) {
+            return;
+        }
+        const point = {
+            x: parseInt(e.nativeEvent.locationX),
+            y: parseInt(e.nativeEvent.locationY)
+        };
+
+        getColorAtPixel(canvasRef.current, point.x, point.y);
+        drawCircle(canvasRef.current, point.x, point.y);
+    }
+
+    async function drawCircle(canvas, locationX, locationY) {
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        let img = new CanvasImage(canvasRef.current);
+        img.src = data.COLOR_PALETTE;
+
+        img.addEventListener('load', () => {
+            ctx.drawImage(img, 0, 0, 200, 200);
+
+            ctx.beginPath();
+            ctx.arc(locationX, locationY, 7, 0, 2 * Math.PI);
+            ctx.strokeStyle = 'black';
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(locationX, locationY - 5, 50, 0, 2 * Math.PI);
+            ctx.strokeStyle = 'rgba(0, 0, 0, 0)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        });
+    }
+
+    async function getColorAtPixel(canvas, locationX, locationY) {
+        const ctx = canvas.getContext('2d');
+        const imageData = await ctx.getImageData(locationX, locationY, 1, 1);
+
+        const colors = imageData.data;
+        console.log(colors);
+        setSelectedColor(`rgb(${colors[0]}, ${colors[1]}, ${colors[2]})`);
+    };
+
+
     return (<>
         <KeyboardAwareScrollView>
             <View style={styles.body}>
                 <Text style={styles.title} variant="titleLarge">Color picker</Text>
-                <Palette onColorSelect={setSelectedColor} />
+                <View style={styles.centeredPalette}>
+                    <TouchableOpacity style={styles.centeredSquare} onPress={(e) => handleClick(e)}>
+                        <Canvas ref={canvasRef} style={styles.canvas} />
+                    </TouchableOpacity>
+                </View>
                 <View style={styles.centeredSquare}>
                     <View style={[styles.square, { backgroundColor: selectedColor }]}></View>
                 </View>
@@ -186,17 +251,27 @@ const styles = StyleSheet.create({
     },
 
     square: {
-        width: 250,
-        height: 250,
+        width: 100,
+        height: 100,
         marginTop: 30
     },
 
     centeredSquare: {
         alignItems: 'center',
-        marginTop: 30
+        marginTop: 30,
+    },
+
+    centeredPalette: {
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 
     palette: {
         marginTop: 30
+    },
+
+    canvas: {
+        width: 200,
+        height: 200
     }
 })
