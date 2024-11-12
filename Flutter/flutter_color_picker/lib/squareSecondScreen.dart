@@ -19,7 +19,7 @@ class _SquareSecondScreenState extends State<SquareSecondScreen> {
       child: Container(
         width: 100,
         height: 100,
-        margin: const EdgeInsets.only(bottom: 15),
+        margin: const EdgeInsets.only(bottom: 15, top: 50),
         decoration: BoxDecoration(
           color: squareColor,
           borderRadius: BorderRadius.zero,

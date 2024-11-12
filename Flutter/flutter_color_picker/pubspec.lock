@@ -75,6 +75,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  image_pixels:
+    dependency: "direct main"
+    description:
+      name: image_pixels
+      sha256: "9043bf47b5856c41d41c5321ff31e5eb07cbb77fd81a18c5191ddc743ad54228"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.0"
   leak_tracker:
     dependency: transitive
     description:
