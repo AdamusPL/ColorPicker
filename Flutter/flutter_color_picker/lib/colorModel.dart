@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
-import 'package:flutter_color_picker/colorConverter.dart';
 import 'package:flutter_color_picker/models/cmykcolor.dart';
 
 class ColorModel with ChangeNotifier {

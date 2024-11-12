@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_color_picker/mainScreenWidget.dart';
 import 'package:flutter_color_picker/secondScreenWidget.dart';
-import 'package:flutter_color_picker/textFieldRow.dart';
 import 'package:flutter_color_picker/color.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_color_picker/colorModel.dart';
