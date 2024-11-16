@@ -22,6 +22,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import android.graphics.Color as AndroidColor
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
@@ -66,6 +67,7 @@ fun ColorWheel(viewModel: MainViewModel) {
                                 val event = awaitPointerEvent()
                                 val offset = event.changes.first().position
                                 lastTouchPosition = handleTouch(offset, size, bitmap, viewModel)
+                                println("Last touch position: $lastTouchPosition")
                             }
                         }
                     }
@@ -82,7 +84,7 @@ fun ColorWheel(viewModel: MainViewModel) {
                             color = Color.Black, // Customize ring color as needed
                             radius = outerRadius,
                             center = position,
-                            style = androidx.compose.ui.graphics.drawscope.Stroke(width = ringThickness)
+                            style = Stroke(width = ringThickness)
                         )
                     }
                 }

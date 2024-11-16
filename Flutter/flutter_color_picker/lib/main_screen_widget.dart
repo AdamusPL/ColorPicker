@@ -1,32 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_color_picker/colorModel.dart';
+import 'package:flutter_color_picker/color_model.dart';
 import 'package:flutter_color_picker/models/cmykcolor.dart';
-import 'package:flutter_color_picker/squareSecondScreen.dart';
-import 'package:flutter_color_picker/textFieldRowDisabled.dart';
+import 'package:flutter_color_picker/square.dart';
+import 'package:flutter_color_picker/text_field_row.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_color_picker/colorPalette.dart';
 
-class SecondScreen extends StatefulWidget {
-  const SecondScreen({super.key});
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
 
   @override
-  State<SecondScreen> createState() => _SecondScreenState();
+  State<MainScreen> createState() => _MainScreenState();
 }
 
-class _SecondScreenState extends State<SecondScreen> {
+class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     ColorModel colorModel = Provider.of<ColorModel>(context);
     return Scaffold(
         body: SingleChildScrollView(
-        child: Column(
+      child: Column(
         children: <Widget>[
-          ColorPalette(),
-          SquareSecondScreen(),
-          TextFieldRowDisabled(
-              labels: ['R', 'G', 'B'],
-              style: TextStyle(fontSize: 20),
+          const Square(),
+          TextFieldRow(
+              labels: const ['R', 'G', 'B'],
+              style: const TextStyle(fontSize: 20),
               textFieldCount: 3,
+              readOnly: false,
               getValue: (label) {
                 switch (label) {
                   case 'R':
@@ -55,10 +54,11 @@ class _SecondScreenState extends State<SecondScreen> {
                 }
                 colorModel.setRGB(color);
               }),
-          TextFieldRowDisabled(
-              labels: ['H', 'S', 'V'],
-              style: TextStyle(fontSize: 20),
+          TextFieldRow(
+              labels: const ['H', 'S', 'V'],
+              style: const TextStyle(fontSize: 20),
               textFieldCount: 3,
+              readOnly: false,
               getValue: (label) {
                 switch (label) {
                   case 'H':
@@ -90,10 +90,11 @@ class _SecondScreenState extends State<SecondScreen> {
                 }
                 colorModel.setHSV(hsvColor);
               }),
-          TextFieldRowDisabled(
-            labels: ['C', 'M', 'Y', 'K'],
-            style: TextStyle(fontSize: 20),
+          TextFieldRow(
+            labels: const ['C', 'M', 'Y', 'K'],
+            style: const TextStyle(fontSize: 20),
             textFieldCount: 4,
+            readOnly: false,
             getValue: (label) {
               switch (label) {
                 case 'C':
@@ -128,10 +129,11 @@ class _SecondScreenState extends State<SecondScreen> {
               colorModel.setCMYK(cmykColor);
             },
           ),
-          TextFieldRowDisabled(
-            labels: ['HEX'],
-            style: TextStyle(fontSize: 20),
+          TextFieldRow(
+            labels: const ['HEX'],
+            style: const TextStyle(fontSize: 20),
             textFieldCount: 1,
+            readOnly: false,
             getValue: (label) {
               switch (label) {
                 case 'HEX':

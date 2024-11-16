@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 
 @immutable
 class CMYKColor {
-  int c;
-  int m;
-  int y;
-  int k;
+  final int c;
+  final int m;
+  final int y;
+  final int k;
 
-  CMYKColor(this.c, this.m, this.y, this.k);
+  const CMYKColor(this.c, this.m, this.y, this.k);
 
   static CMYKColor fromColor(Color color){
     int r = color.red;
@@ -19,7 +19,7 @@ class CMYKColor {
     var bp = b / 255.0;
     var k = 1 - max(rp, max(gp, bp));
     if (k == 1.0) {
-      return CMYKColor(0, 0, 0, 100);
+      return const CMYKColor(0, 0, 0, 100);
     }
     var c = (1 - rp - k) / (1 - k);
     var m = (1 - gp - k) / (1 - k);

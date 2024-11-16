@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_color_picker/mainScreenWidget.dart';
-import 'package:flutter_color_picker/secondScreenWidget.dart';
+import 'package:flutter_color_picker/main_screen_widget.dart';
+import 'package:flutter_color_picker/second_screen_widget.dart';
 import 'package:flutter_color_picker/color.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_color_picker/colorModel.dart';
+import 'package:flutter_color_picker/color_model.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 void main() {
   runApp(
     ChangeNotifierProvider(
-      create: (context) => ColorModel(),
-       child: MyApp()),
+        create: (context) => ColorModel(), child: const MyApp()),
   );
 }
 
@@ -74,19 +74,35 @@ class _MyHomePageState extends State<MyHomePage> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: SvgPicture.asset(
+              'lib/images/calculate.svg',
+              colorFilter: ColorFilter.mode(
+                _selectedIndex == 0 ? Colors.amber[800]! : Colors.grey,
+                BlendMode.srcIn,
+              ),
+            ),
+            label: 'Konwerter',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            label: 'Business',
+            icon: SvgPicture.asset(
+              'lib/images/palette.svg',
+              colorFilter: ColorFilter.mode(
+                _selectedIndex == 1 ? Colors.amber[800]! : Colors.grey,
+                BlendMode.srcIn,
+              ),
+            ),
+            label: 'Paleta',
           ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.amber[800],
         onTap: _onItemTapped,
+        selectedIconTheme: const IconThemeData(size: 24),
+        unselectedIconTheme: const IconThemeData(size: 24),
+        selectedLabelStyle: const TextStyle(fontSize: 12),
+        unselectedLabelStyle: const TextStyle(fontSize: 12),
       ),
     );
   }
