@@ -31,13 +31,21 @@ class _ColorPaletteState extends State<ColorPalette> {
               localPosition = details.localPosition;
             });
           },
-          child: ImagePixels(
+          child: SizedBox(
+              width: 200,
+              height: 200,
+              child: ClipRect(
+
+              child: ImagePixels(
             imageProvider: myImageProvider,
             builder: (BuildContext context, ImgDetails img) {
               if (localPosition.dx >= 0 && localPosition.dy >= 0) {
+                double scaleX = img.width! / 200;
+                double scaleY = img.height! / 200;
+
                 final color = img.pixelColorAt!(
-                  localPosition.dx.toInt(),
-                  localPosition.dy.toInt(),
+                  (localPosition.dx * scaleX).toInt(),
+                  (localPosition.dy * scaleY).toInt(),
                 );
 
                 localPositionX = localPosition.dx;
@@ -60,7 +68,7 @@ class _ColorPaletteState extends State<ColorPalette> {
                 )
               ]);
             },
-          ),
+          ))),
         ));
   }
 }
