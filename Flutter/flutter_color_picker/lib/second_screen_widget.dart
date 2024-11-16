@@ -33,7 +33,6 @@ class _SecondScreenState extends State<SecondScreen> {
             ),
           ),
           
-
           // Square Widget
           const SizedBox(
             height: 100.0,
