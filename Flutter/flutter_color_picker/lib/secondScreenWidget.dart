@@ -1,27 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_color_picker/colorModel.dart';
 import 'package:flutter_color_picker/models/cmykcolor.dart';
-import 'package:flutter_color_picker/square.dart';
-import 'package:flutter_color_picker/textFieldRow.dart';
+import 'package:flutter_color_picker/squareSecondScreen.dart';
+import 'package:flutter_color_picker/textFieldRowDisabled.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_color_picker/colorPalette.dart';
 
-class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+class SecondScreen extends StatefulWidget {
+  const SecondScreen({super.key});
 
   @override
-  State<MainScreen> createState() => _MainScreenState();
+  State<SecondScreen> createState() => _SecondScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
+class _SecondScreenState extends State<SecondScreen> {
   @override
   Widget build(BuildContext context) {
     ColorModel colorModel = Provider.of<ColorModel>(context);
     return Scaffold(
         body: SingleChildScrollView(
-      child: Column(
+        child: Column(
         children: <Widget>[
-          Square(),
-          TextFieldRow(
+          ColorPalette(),
+          SquareSecondScreen(),
+          TextFieldRowDisabled(
               labels: ['R', 'G', 'B'],
               style: TextStyle(fontSize: 20),
               textFieldCount: 3,
@@ -53,7 +55,7 @@ class _MainScreenState extends State<MainScreen> {
                 }
                 colorModel.setRGB(color);
               }),
-          TextFieldRow(
+          TextFieldRowDisabled(
               labels: ['H', 'S', 'V'],
               style: TextStyle(fontSize: 20),
               textFieldCount: 3,
@@ -88,7 +90,7 @@ class _MainScreenState extends State<MainScreen> {
                 }
                 colorModel.setHSV(hsvColor);
               }),
-          TextFieldRow(
+          TextFieldRowDisabled(
             labels: ['C', 'M', 'Y', 'K'],
             style: TextStyle(fontSize: 20),
             textFieldCount: 4,
@@ -126,7 +128,7 @@ class _MainScreenState extends State<MainScreen> {
               colorModel.setCMYK(cmykColor);
             },
           ),
-          TextFieldRow(
+          TextFieldRowDisabled(
             labels: ['HEX'],
             style: TextStyle(fontSize: 20),
             textFieldCount: 1,
