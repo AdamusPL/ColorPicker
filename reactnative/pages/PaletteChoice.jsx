@@ -1,16 +1,14 @@
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, View, Image, Pressable, Dimensions } from "react-native";
 import { TextInput, Text } from 'react-native-paper';
-import React, { useEffect, useRef } from "react";
-import { useState } from "react";
-import { convertRGBToCMYK, convertRGBToHex, convertRGBToHSV } from "./Calculator";
+import React, { useEffect, useState } from "react";
+import { convertRGBToCMYK, convertRGBToHex, convertRGBToHSV, convertHSVToRGB } from "./Calculator";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import Canvas, { Image as CanvasImage } from 'react-native-canvas';
-import data from './color-palette.json'
 
 export default function PaletteChoice() {
-    const canvasRef = useRef(null);
-    const [isCanvasRendered, setIsCanvasRendered] = useState(false);
+    const { width, height } = Dimensions.get('window');
+    const [circlePosition, setCirclePosition] = useState({x: width / 2, y: 101});
     const [selectedColor, setSelectedColor] = useState('rgb(255, 0, 0)');
+    const [isDrawing, setIsDrawing] = useState(false);
 
     //r,g,b
     const [r, setR] = useState("0");
@@ -30,19 +28,6 @@ export default function PaletteChoice() {
 
     //hex
     const [hex, setHex] = useState("000000");
-
-    useEffect(() => {
-        if (canvasRef.current && !isCanvasRendered) {
-            setIsCanvasRendered(true);
-            const ctx = canvasRef.current.getContext('2d');
-            let img = new CanvasImage(canvasRef.current);
-            img.src = data.COLOR_PALETTE;
-
-            img.addEventListener('load', () => {
-                ctx.drawImage(img, 0, 0, 200, 200);
-            });
-        }
-    }, [canvasRef, isCanvasRendered]);
 
     useEffect(() => {
         handleChange();
@@ -74,84 +59,100 @@ export default function PaletteChoice() {
         }
     }
 
-    function handleClick(e) {
-        if (!canvasRef.current) {
-            return;
+    const handlePress = (event) => {
+        const { locationX, locationY } = event.nativeEvent;
+
+        const centerX = width / 2;
+        const centerY = 101;
+        const radius = 101;
+        const distance = Math.sqrt(Math.pow(locationX - centerX, 2) + Math.pow(locationY - centerY, 2));
+        const angle = Math.atan2(locationY - centerY, locationX - centerX) * (180 / Math.PI);
+
+        if (distance <= radius) {
+            const hue = (angle + 360) % 360;
+
+            const saturation = Math.min(distance / radius, 1) * 100;
+
+            const value = 100;
+
+            const { r, g, b } = convertHSVToRGB(hue, saturation, value);
+
+            const rgbColor = `rgb(${r}, ${g}, ${b})`;
+            setSelectedColor(rgbColor);
+            setR(r.toString());
+            setG(g.toString());
+            setB(b.toString());
+
+            setCirclePosition({ x: locationX, y: locationY });
         }
-        const point = {
-            x: parseInt(e.nativeEvent.locationX),
-            y: parseInt(e.nativeEvent.locationY)
-        };
 
-        getColorAtPixel(canvasRef.current, point.x, point.y);
-        drawCircle(canvasRef.current, point.x, point.y);
-    }
-
-    async function drawCircle(canvas, locationX, locationY) {
-        const ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        let img = new CanvasImage(canvasRef.current);
-        img.src = data.COLOR_PALETTE;
-
-        img.addEventListener('load', () => {
-            ctx.drawImage(img, 0, 0, 200, 200);
-
-            ctx.beginPath();
-            ctx.arc(locationX, locationY, 7, 0, 2 * Math.PI);
-            ctx.strokeStyle = 'black';
-            ctx.stroke();
-
-            ctx.beginPath();
-            ctx.arc(locationX, locationY - 5, 50, 0, 2 * Math.PI);
-            ctx.strokeStyle = 'rgba(0, 0, 0, 0)';
-            ctx.lineWidth = 2;
-            ctx.stroke();
-        });
-    }
-
-    async function getColorAtPixel(canvas, locationX, locationY) {
-        const ctx = canvas.getContext('2d');
-        const imageData = await ctx.getImageData(locationX, locationY, 1, 1);
-
-        const colors = imageData.data;
-        console.log(colors);
-        setSelectedColor(`rgb(${colors[0]}, ${colors[1]}, ${colors[2]})`);
     };
+
+    function handleTouchStart(event) {
+        setIsDrawing(true);
+
+        handlePress(event);
+    }
+
+    function handleTouchMove(event) {
+        if (!isDrawing) return;
+
+        handlePress(event);
+    }
+
+    function handleTouchEnd(event) {
+        setIsDrawing(false);
+    }
 
 
     return (<>
         <KeyboardAwareScrollView>
             <View style={styles.body}>
                 <Text style={styles.title} variant="titleLarge">Color picker</Text>
-                <View style={styles.centeredPalette}>
-                    <TouchableOpacity style={styles.centeredSquare} onPress={(e) => handleClick(e)}>
-                        <Canvas ref={canvasRef} style={styles.canvas} />
-                    </TouchableOpacity>
-                </View>
+                <Pressable
+                    onStartShouldSetResponder={() => true}
+                    onMoveShouldSetResponder={() => true}
+                    onTouchStart={handleTouchStart}
+                    onTouchMove={handleTouchMove}
+                    onTouchEnd={handleTouchEnd}
+                    onPress={handlePress}
+                    style={styles.centeredPalette}>
+                    <Image style={styles.image} source={require('./images/palette.png')}></Image>
+                    {circlePosition && (
+                        <View
+                            style={[
+                                styles.circle,
+                                {
+                                    top: circlePosition.y - 10,
+                                    left: circlePosition.x - 10,
+                                },
+                            ]}
+                        />
+                    )}
+                </Pressable>
                 <View style={styles.centeredSquare}>
                     <View style={[styles.square, { backgroundColor: selectedColor }]}></View>
                 </View>
-            </View>
+            </View >
 
             <View style={styles.fields}>
                 <View style={styles.container}>
                     <TextInput style={styles.input}
                         label="R"
                         value={r}
-                        disabled
+                        readOnly
                         maxLength={3}
                     />
                     <TextInput style={styles.input}
                         label="G"
                         value={g}
-                        disabled
+                        readOnly
                         maxLength={3}
                     />
                     <TextInput style={styles.input}
                         label="B"
                         value={b}
-                        disabled
+                        readOnly
                         maxLength={3}
                     />
                 </View>
@@ -160,20 +161,20 @@ export default function PaletteChoice() {
                     <TextInput style={styles.input}
                         label="H"
                         value={h}
-                        disabled
+                        readOnly
                         maxLength={3}
                         right={<TextInput.Affix text="°" />}
                     />
                     <TextInput style={styles.input}
                         label="S"
-                        value={s} disabled
+                        value={s} readOnly
                         maxLength={3}
                         right={<TextInput.Affix text="%" />}
                     />
                     <TextInput style={styles.input}
                         label="V"
                         value={v}
-                        disabled
+                        readOnly
                         maxLength={3}
                         right={<TextInput.Affix text="%" />}
                     />
@@ -183,28 +184,28 @@ export default function PaletteChoice() {
                     <TextInput style={styles.input}
                         label="C"
                         value={c}
-                        disabled
+                        readOnly
                         maxLength={3}
                         right={<TextInput.Affix text="%" />}
                     />
                     <TextInput style={styles.input}
                         label="M"
                         value={m}
-                        disabled
+                        readOnly
                         maxLength={3}
                         right={<TextInput.Affix text="%" />}
                     />
                     <TextInput style={styles.input}
                         label="Y"
                         value={y}
-                        disabled
+                        readOnly
                         maxLength={3}
                         right={<TextInput.Affix text="%" />}
                     />
                     <TextInput style={styles.input}
                         label="K"
                         value={k}
-                        disabled
+                        readOnly
                         maxLength={3}
                         right={<TextInput.Affix text="%" />}
                     />
@@ -214,13 +215,13 @@ export default function PaletteChoice() {
                     <TextInput style={styles.input}
                         label="Hex"
                         value={hex}
-                        disabled
+                        readOnly
                         maxLength={6}
                         left={<TextInput.Affix text="#" />}
                     />
                 </View>
             </View>
-        </KeyboardAwareScrollView>
+        </KeyboardAwareScrollView >
     </>)
 }
 
@@ -264,14 +265,28 @@ const styles = StyleSheet.create({
     centeredPalette: {
         alignItems: 'center',
         justifyContent: 'center',
+        flex: 1,
+        width: '100%',
+        height: '100%',
     },
 
     palette: {
         marginTop: 30
     },
 
-    canvas: {
-        width: 200,
-        height: 200
+    circle: {
+        position: 'absolute',
+        width: 20,
+        height: 20,
+        backgroundColor: 'rgb(0, 0, 0)',
+        borderRadius: 25,
+        borderWidth: 3,
+        borderColor: 'black',
+        backgroundColor: 'transparent',
+    },
+
+    image: {
+        width: 202,
+        height: 202
     }
 })
