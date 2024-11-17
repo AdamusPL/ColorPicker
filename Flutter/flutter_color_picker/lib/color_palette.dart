@@ -159,6 +159,7 @@ class ColorPalette extends StatefulWidget {
 class _ColorPaletteState extends State<ColorPalette> {
   Offset localPosition = const Offset(-1, -1);
   ui.Image? image;
+  Offset? _lastValidPosition;
 
   @override
   void initState() {
@@ -203,6 +204,10 @@ class _ColorPaletteState extends State<ColorPalette> {
               onColorSelected: (color) {
                 colorModel.setRGB(color);
               },
+              setLastValidPosition: (position) {
+                _lastValidPosition = position;
+              },
+              getLastValidPosition: () => _lastValidPosition,
             ),
           ),
         ));
@@ -214,12 +219,16 @@ class ColorWheelPainter extends CustomPainter {
   final ui.Image? image;
   final double wheelSize;
   final void Function(dynamic color) onColorSelected;
+  final void Function(Offset position) setLastValidPosition;
+  final Offset? Function() getLastValidPosition;
 
   ColorWheelPainter({
     required this.position,
     required this.image,
     required this.wheelSize,
     required this.onColorSelected,
+    required this.setLastValidPosition,
+    required this.getLastValidPosition,
   });
 
   @override
@@ -248,33 +257,44 @@ class ColorWheelPainter extends CustomPainter {
           ..style = PaintingStyle.stroke
           ..strokeWidth = 2,
       );
+      setLastValidPosition(position);
       _updateColorModel(position);
+    } else if (getLastValidPosition() != null) {
+      canvas.drawCircle(
+        getLastValidPosition()!,
+        10,
+        Paint()
+          ..color = Colors.black
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 2,
+      );
     }
   }
 
   void _updateColorModel(Offset position) async {
-  if (image != null && position.dx >= 0 && position.dy >= 0) {
-    // Adjust for the padding
-    double adjustedX = position.dx;
-    double adjustedY = position.dy;
+    if (image != null && position.dx >= 0 && position.dy >= 0) {
+      // Adjust for the padding
+      double adjustedX = position.dx;
+      double adjustedY = position.dy;
 
-    // Scale the touch position to the actual image size
-    double scaleX = image!.width / wheelSize;
-    double scaleY = image!.height / wheelSize;
+      // Scale the touch position to the actual image size
+      double scaleX = image!.width / wheelSize;
+      double scaleY = image!.height / wheelSize;
 
-    int imgX = (adjustedX * scaleX).toInt();
-    int imgY = (adjustedY * scaleY).toInt();
+      int imgX = (adjustedX * scaleX).toInt();
+      int imgY = (adjustedY * scaleY).toInt();
 
-    if (imgX >= 0 &&
-        imgX < image!.width &&
-        imgY >= 0 &&
-        imgY < image!.height) {
-      final color = await _getPixelColor(image!, imgX, imgY);
-      print(color);
-      onColorSelected(color);
+      if (imgX >= 0 &&
+          imgX < image!.width &&
+          imgY >= 0 &&
+          imgY < image!.height) {
+        final color = await _getPixelColor(image!, imgX, imgY);
+        onColorSelected(color);
+      }
     }
   }
-}
+
+  
 
   Future<Color> _getPixelColor(ui.Image image, int x, int y) async {
     final byteData = await image.toByteData(format: ui.ImageByteFormat.rawRgba);

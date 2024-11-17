@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_color_picker/main_screen_widget.dart';
 import 'package:flutter_color_picker/second_screen_widget.dart';
 import 'package:flutter_color_picker/color.dart';
@@ -7,6 +8,9 @@ import 'package:flutter_color_picker/color_model.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) =>null);
   runApp(
     ChangeNotifierProvider(
         create: (context) => ColorModel(), child: const MyApp()),
