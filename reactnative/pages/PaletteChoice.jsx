@@ -6,7 +6,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 
 export default function PaletteChoice() {
     const { width, height } = Dimensions.get('window');
-    const [circlePosition, setCirclePosition] = useState({x: width / 2, y: 101});
+    const [circlePosition, setCirclePosition] = useState({ x: 101, y: 101 });
     const [selectedColor, setSelectedColor] = useState('rgb(255, 0, 0)');
     const [isDrawing, setIsDrawing] = useState(false);
 
@@ -62,11 +62,18 @@ export default function PaletteChoice() {
     const handlePress = (event) => {
         const { locationX, locationY } = event.nativeEvent;
 
-        const centerX = width / 2;
+        const centerX = 101;
         const centerY = 101;
         const radius = 101;
         const distance = Math.sqrt(Math.pow(locationX - centerX, 2) + Math.pow(locationY - centerY, 2));
         const angle = Math.atan2(locationY - centerY, locationX - centerX) * (180 / Math.PI);
+
+        console.log("locationX", locationX)
+        // console.log("locationY", locationY)
+        // console.log("centerX", centerX)
+        // console.log("distance", distance)
+        // console.log("angle", angle);
+        // console.log("");
 
         if (distance <= radius) {
             const hue = (angle + 360) % 360;
@@ -109,27 +116,29 @@ export default function PaletteChoice() {
         <KeyboardAwareScrollView>
             <View style={styles.body}>
                 <Text style={styles.title} variant="titleLarge">Color picker</Text>
-                <Pressable
-                    onStartShouldSetResponder={() => true}
-                    onMoveShouldSetResponder={() => true}
-                    onTouchStart={handleTouchStart}
-                    onTouchMove={handleTouchMove}
-                    onTouchEnd={handleTouchEnd}
-                    onPress={handlePress}
-                    style={styles.centeredPalette}>
-                    <Image style={styles.image} source={require('./images/palette.png')}></Image>
-                    {circlePosition && (
-                        <View
-                            style={[
-                                styles.circle,
-                                {
-                                    top: circlePosition.y - 10,
-                                    left: circlePosition.x - 10,
-                                },
-                            ]}
-                        />
-                    )}
-                </Pressable>
+                <View style={styles.centered}>
+                    <Pressable
+                        onStartShouldSetResponder={() => true}
+                        onMoveShouldSetResponder={() => true}
+                        onTouchStart={handleTouchStart}
+                        onTouchMove={handleTouchMove}
+                        onTouchEnd={handleTouchEnd}
+                        onPress={handlePress}
+                        style={styles.centeredPalette}>
+                        <Image style={styles.image} source={require('./images/palette.png')}></Image>
+                        {circlePosition && (
+                            <View
+                                style={[
+                                    styles.circle,
+                                    {
+                                        top: circlePosition.y - 10,
+                                        left: circlePosition.x - 10,
+                                    },
+                                ]}
+                            />
+                        )}
+                    </Pressable>
+                </View>
                 <View style={styles.centeredSquare}>
                     <View style={[styles.square, { backgroundColor: selectedColor }]}></View>
                 </View>
@@ -263,6 +272,14 @@ const styles = StyleSheet.create({
     },
 
     centeredPalette: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1,
+        width: 202,
+        height: 202,
+    },
+
+    centered: {
         alignItems: 'center',
         justifyContent: 'center',
         flex: 1,
