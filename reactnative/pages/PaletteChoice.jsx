@@ -64,6 +64,10 @@ export default function PaletteChoice() {
     const handlePress = (event) => {
         const { pageX, pageY } = event.nativeEvent;
 
+        if(!isDrawing){
+            setIsDrawing(true);
+        }
+
         const centerX = pressableCenterPosition.x;
         const centerY = pressableCenterPosition.y;
         
@@ -109,22 +113,6 @@ export default function PaletteChoice() {
 
     };
 
-    function handleTouchStart(event) {
-        setIsDrawing(true);
-
-        handlePress(event);
-    }
-
-    function handleTouchMove(event) {
-        if (!isDrawing) return;
-
-        handlePress(event);
-    }
-
-    function handleTouchEnd(event) {
-        setIsDrawing(false);
-    }
-
     function handlePressableLayout(event) {
         const {x, y, width, height} = event.nativeEvent.layout;
         const previousY = pressableCenterPosition.y;
@@ -168,7 +156,7 @@ export default function PaletteChoice() {
                 <View style={styles.centeredSquare}>
                     <View style={[styles.square, { backgroundColor: selectedColor }]}></View>
                 </View>
-                {circlePosition && (
+                {circlePosition && isDrawing && (
                             <View
                                 style={[
                                     styles.circle,
