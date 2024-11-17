@@ -6,7 +6,9 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 
 export default function PaletteChoice() {
     const { width, height } = Dimensions.get('window');
-    const [circlePosition, setCirclePosition] = useState({ x: 101, y: 101 });
+    const [pressableCenterPosition, setPressableCenterPosition] = useState({ x: 0, y: 0 });
+    const [pressableWidth, setPressableWidth] = useState(0);
+    const [circlePosition, setCirclePosition] = useState({ x: 0, y: 0});
     const [selectedColor, setSelectedColor] = useState('rgb(255, 0, 0)');
     const [isDrawing, setIsDrawing] = useState(false);
 
@@ -60,15 +62,16 @@ export default function PaletteChoice() {
     }
 
     const handlePress = (event) => {
-        const { locationX, locationY } = event.nativeEvent;
+        const { pageX, pageY } = event.nativeEvent;
 
-        const centerX = 101;
-        const centerY = 101;
-        const radius = 101;
-        const distance = Math.sqrt(Math.pow(locationX - centerX, 2) + Math.pow(locationY - centerY, 2));
-        const angle = Math.atan2(locationY - centerY, locationX - centerX) * (180 / Math.PI);
+        const centerX = pressableCenterPosition.x;
+        const centerY = pressableCenterPosition.y;
+        
+        const radius = pressableWidth / 2;
+        const distance = Math.sqrt(Math.pow(pageX - centerX, 2) + Math.pow(pageY - centerY, 2));
+        const angle = Math.atan2(pageY - centerY, pageX - centerX) * (180 / Math.PI);
 
-        console.log("locationX", locationX)
+        // console.log("locationX", locationX)
         // console.log("locationY", locationY)
         // console.log("centerX", centerX)
         // console.log("distance", distance)
@@ -90,7 +93,18 @@ export default function PaletteChoice() {
             setG(g.toString());
             setB(b.toString());
 
-            setCirclePosition({ x: locationX, y: locationY });
+            setCirclePosition({ x: pageX, y: pageY });
+        }else{
+            console.log("centerX: ", centerX);
+            console.log("centerY: ", centerY);
+            console.log("pageX: ", pageX);
+            console.log("pageY: ", pageY);
+            console.log("locationX - centerX pow: ", Math.pow(pageX - centerX, 2));
+            console.log("locationY - centerY pow: ", Math.pow(pageY - centerY, 2));
+            console.log("sqrt: ", Math.sqrt(Math.pow(pageX - centerX, 2) + Math.pow(pageY - centerY, 2)));
+            console.log("distance: ", distance);
+            console.log("radius: ", radius);
+            console.log("out of range");  
         }
 
     };
@@ -111,22 +125,50 @@ export default function PaletteChoice() {
         setIsDrawing(false);
     }
 
+    function handlePressableLayout(event) {
+        const {x, y, width, height} = event.nativeEvent.layout;
+        const previousY = pressableCenterPosition.y;
+        const previousX = pressableCenterPosition.x;
+        setPressableCenterPosition({ x: x + previousX + width/2, y: y + previousY + height/2 });
+        setPressableWidth(width);
+    }
+
+    function handleLayout(event) {
+        const { x, y } = event.nativeEvent.layout;
+        const previousX = pressableCenterPosition.x;
+        const previousY = pressableCenterPosition.y;
+        setPressableCenterPosition({ x: x + previousX, y: y + previousY });
+    }
+
+    function handleLayoutDemo(event) {
+        const {  x, y  } = event.nativeEvent.layout;
+        const previousX = pressableCenterPosition.x;
+        const previousY = pressableCenterPosition.y;
+        setPressableCenterPosition({ x: x + previousX, y: y + previousY });
+    }
+
 
     return (<>
         <KeyboardAwareScrollView>
-            <View style={styles.body}>
+            <View onLayout={handleLayoutDemo}>
                 <Text style={styles.title} variant="titleLarge">Color picker</Text>
-                <View style={styles.centered}>
+                <View onLayout={handleLayout} style={styles.centered}>
                     <Pressable
                         onStartShouldSetResponder={() => true}
                         onMoveShouldSetResponder={() => true}
-                        onTouchStart={handleTouchStart}
-                        onTouchMove={handleTouchMove}
-                        onTouchEnd={handleTouchEnd}
+                        onTouchMove={handlePress}
                         onPress={handlePress}
+                        onLayout={handlePressableLayout}
                         style={styles.centeredPalette}>
-                        <Image style={styles.image} source={require('./images/palette.png')}></Image>
-                        {circlePosition && (
+                        <Image source={require('./images/palette.png')}></Image>
+                        
+                    </Pressable>
+                    
+                </View>
+                <View style={styles.centeredSquare}>
+                    <View style={[styles.square, { backgroundColor: selectedColor }]}></View>
+                </View>
+                {circlePosition && (
                             <View
                                 style={[
                                     styles.circle,
@@ -137,11 +179,6 @@ export default function PaletteChoice() {
                                 ]}
                             />
                         )}
-                    </Pressable>
-                </View>
-                <View style={styles.centeredSquare}>
-                    <View style={[styles.square, { backgroundColor: selectedColor }]}></View>
-                </View>
             </View >
 
             <View style={styles.fields}>
@@ -246,6 +283,8 @@ const styles = StyleSheet.create({
     },
 
     title: {
+        marginLeft: 15,
+        marginRight: 15,
         marginTop: 30,
         marginBottom: 30
     },
@@ -274,9 +313,9 @@ const styles = StyleSheet.create({
     centeredPalette: {
         alignItems: 'center',
         justifyContent: 'center',
-        flex: 1,
-        width: 202,
-        height: 202,
+        borderRadius: 101,
+        width: '100%',
+        height: '100%',
     },
 
     centered: {
