@@ -3,8 +3,6 @@ package com.example.myapplication.ui.components
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,7 +17,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import android.graphics.Color as AndroidColor
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
@@ -29,7 +26,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.toSize
 import com.example.myapplication.MainViewModel
 import com.example.myapplication.R
 import kotlin.math.pow
@@ -45,7 +41,7 @@ fun ColorWheel(viewModel: MainViewModel) {
     val painter: Painter = painterResource(id = R.drawable.color_wheel)
     val context = LocalContext.current
     val bitmap = remember { BitmapFactory.decodeResource(context.resources, R.drawable.color_wheel) }
-    var lastTouchPosition by remember { mutableStateOf<Offset?>(null) }
+    var lastTouchPosition by remember { mutableStateOf(Offset.Zero) }
 
     Card (
         modifier = Modifier
@@ -66,7 +62,7 @@ fun ColorWheel(viewModel: MainViewModel) {
                             while (true) {
                                 val event = awaitPointerEvent()
                                 val offset = event.changes.first().position
-                                lastTouchPosition = handleTouch(offset, size, bitmap, viewModel)
+                                lastTouchPosition = handleTouch(offset, size, bitmap, viewModel, lastTouchPosition)
                                 println("Last touch position: $lastTouchPosition")
                             }
                         }
@@ -74,7 +70,7 @@ fun ColorWheel(viewModel: MainViewModel) {
             )
 
             if(lastTouchPosition != Offset.Zero) {
-                lastTouchPosition?.let { position ->
+                lastTouchPosition.let { position ->
                     Canvas(modifier = Modifier.fillMaxSize()) {
                         val outerRadius = 20f // Customize outer radius as needed
                         val ringThickness = 4f // Customize ring thickness as needed
@@ -94,7 +90,7 @@ fun ColorWheel(viewModel: MainViewModel) {
     }
 }
 
-private fun handleTouch(offset: Offset, size: IntSize, bitmap: android.graphics.Bitmap, viewModel: MainViewModel): Offset {
+private fun handleTouch(offset: Offset, size: IntSize, bitmap: android.graphics.Bitmap, viewModel: MainViewModel, lastTouchPosition: Offset): Offset {
     val imageWidth = size.width.toFloat()
     val imageHeight = size.height.toFloat()
     val centerX = imageWidth / 2
@@ -119,10 +115,9 @@ private fun handleTouch(offset: Offset, size: IntSize, bitmap: android.graphics.
             val b = AndroidColor.blue(pixel)
             viewModel.updateRGBValues(r, g, b)
 
-            return localOffset;
+            return localOffset
         }
     }
-    return Offset.Zero
-
+    return lastTouchPosition
 }
 
