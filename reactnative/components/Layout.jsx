@@ -10,8 +10,8 @@ const PaletteRoute = () => <PaletteChoice />;
 const Layout = () => {
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    { key: 'values', title: 'Values' },
-    { key: 'palette', title: 'Palette' },
+    { key: 'values', title: 'Values', focusedIcon: 'calculate' },
+    { key: 'palette', title: 'Palette', focusedIcon: 'palette' },
   ]);
 
   const renderScene = BottomNavigation.SceneMap({
