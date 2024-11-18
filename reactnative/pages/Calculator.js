@@ -114,7 +114,7 @@ export function convertRGBToHSV(rInput, gInput, bInput) {
     //v
     v = Cmax * 100;
 
-    return { h: Math.round(h).toString(), s: Math.round(s).toString(), v: Math.round(v).toString() };
+    return { h: h.toFixed(2).toString(), s: s.toFixed(2).toString(), v: v.toFixed(2).toString() };
 }
 
 export function convertRGBToCMYK(rInput, gInput, bInput) {

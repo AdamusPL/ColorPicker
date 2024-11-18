@@ -52,12 +52,12 @@ fun isValidInput(label: String, input: String): Boolean {
 
         "H" -> {
             input.isBlank() || (input.toDoubleOrNull()
-                ?.let { it in 0.0..360.0 } == true && input.length in 0..3)
+                ?.let { it in 0.0..360.0 } == true && input.length in 0..5)
         }
 
         "S", "V", "C", "M", "Y", "K" -> {
             input.isBlank() || (input.toDoubleOrNull()
-                ?.let { it in 0.0..100.0 } == true && input.length in 0..3)
+                ?.let { it in 0.0..100.0 } == true && input.length in 0..5)
         }
 
         "HEX" -> {
