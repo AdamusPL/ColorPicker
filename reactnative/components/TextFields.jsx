@@ -211,21 +211,39 @@ export default function TextFields({ isReadOnly }) {
                     value={r}
                     readOnly={isReadOnly}
                     maxLength={3}
-                    onChangeText={x => !isReadOnly ? handleRGBChange(x, 'r') : null}
+                    onChangeText={x => {
+                        if (!isReadOnly) {
+                            if (x >= 0 && x <= 255) {
+                                handleRGBChange(x, 'r');
+                            }
+                        }
+                    }}
                 />
                 <TextInput style={styles.input}
                     label="G"
                     value={g}
                     readOnly={isReadOnly}
                     maxLength={3}
-                    onChangeText={x => !isReadOnly ? handleRGBChange(x, 'g') : null}
+                    onChangeText={x => {
+                        if (!isReadOnly) {
+                            if (x >= 0 && x <= 255) {
+                                handleRGBChange(x, 'g');
+                            }
+                        }
+                    }}
                 />
                 <TextInput style={styles.input}
                     label="B"
                     value={b}
                     readOnly={isReadOnly}
                     maxLength={3}
-                    onChangeText={x => !isReadOnly ? handleRGBChange(x, 'b') : null}
+                    onChangeText={x => {
+                        if (!isReadOnly) {
+                            if (x >= 0 && x <= 255) {
+                                handleRGBChange(x, 'b');
+                            }
+                        }
+                    }}
                 />
             </View>
 
@@ -235,7 +253,13 @@ export default function TextFields({ isReadOnly }) {
                     value={h}
                     readOnly={isReadOnly}
                     maxLength={3}
-                    onChangeText={x => !isReadOnly ? handleHSVChange(x, 'h') : null}
+                    onChangeText={x => {
+                        if (!isReadOnly) {
+                            if (x >= 0 && x <= 100) {
+                                handleHSVChange(x, 'h');
+                            }
+                        }
+                    }}
                     right={<TextInput.Affix text="°" />}
                 />
                 <TextInput style={styles.input}
@@ -243,7 +267,13 @@ export default function TextFields({ isReadOnly }) {
                     value={s}
                     readOnly={isReadOnly}
                     maxLength={3}
-                    onChangeText={x => !isReadOnly ? handleHSVChange(x, 's') : null}
+                    onChangeText={x => {
+                        if (!isReadOnly) {
+                            if (x >= 0 && x <= 100) {
+                                handleHSVChange(x, 's');
+                            }
+                        }
+                    }}
                     right={<TextInput.Affix text="%" />}
                 />
                 <TextInput style={styles.input}
@@ -251,7 +281,13 @@ export default function TextFields({ isReadOnly }) {
                     value={v}
                     readOnly={isReadOnly}
                     maxLength={3}
-                    onChangeText={x => !isReadOnly ? handleHSVChange(x, 'v') : null}
+                    onChangeText={x => {
+                        if (!isReadOnly) {
+                            if (x >= 0 && x <= 100) {
+                                handleHSVChange(x, 'v');
+                            }
+                        }
+                    }}
                     right={<TextInput.Affix text="%" />}
                 />
             </View>
@@ -262,7 +298,13 @@ export default function TextFields({ isReadOnly }) {
                     value={c}
                     readOnly={isReadOnly}
                     maxLength={3}
-                    onChangeText={x => !isReadOnly ? handleCMYKChange(x, 'c') : null}
+                    onChangeText={x => {
+                        if (!isReadOnly) {
+                            if (x >= 0 && x <= 100) {
+                                handleCMYKChange(x, 'c');
+                            }
+                        }
+                    }}
                     right={<TextInput.Affix text="%" />}
                 />
                 <TextInput style={styles.input}
@@ -270,7 +312,13 @@ export default function TextFields({ isReadOnly }) {
                     value={m}
                     readOnly={isReadOnly}
                     maxLength={3}
-                    onChangeText={x => !isReadOnly ? handleCMYKChange(x, 'm') : null}
+                    onChangeText={x => {
+                        if (!isReadOnly) {
+                            if (x >= 0 && x <= 100) {
+                                handleCMYKChange(x, 'm');
+                            }
+                        }
+                    }}
                     right={<TextInput.Affix text="%" />}
                 />
                 <TextInput style={styles.input}
@@ -278,7 +326,13 @@ export default function TextFields({ isReadOnly }) {
                     value={y}
                     readOnly={isReadOnly}
                     maxLength={3}
-                    onChangeText={x => !isReadOnly ? handleCMYKChange(x, 'y') : null}
+                    onChangeText={x => {
+                        if (!isReadOnly) {
+                            if (x >= 0 && x <= 100) {
+                                handleCMYKChange(x, 'y');
+                            }
+                        }
+                    }}
                     right={<TextInput.Affix text="%" />}
                 />
                 <TextInput style={styles.input}
@@ -286,7 +340,13 @@ export default function TextFields({ isReadOnly }) {
                     value={k}
                     readOnly={isReadOnly}
                     maxLength={3}
-                    onChangeText={x => !isReadOnly ? handleCMYKChange(x, 'k') : null}
+                    onChangeText={x => {
+                        if (!isReadOnly) {
+                            if (x >= 0 && x <= 100) {
+                                handleCMYKChange(x, 'k');
+                            }
+                        }
+                    }}
                     right={<TextInput.Affix text="%" />}
                 />
             </View>
@@ -297,7 +357,14 @@ export default function TextFields({ isReadOnly }) {
                     value={hex}
                     readOnly={isReadOnly}
                     maxLength={6}
-                    onChangeText={x => !isReadOnly ? handleHexChange(x) : null}
+                    onChangeText={x => {
+                        if (!isReadOnly) {
+                            const regex = /^[A-Fa-f0-9]{0,6}$/;
+                            if (regex.test(x)) {
+                                handleHexChange(x);
+                            }
+                        }
+                    }}
                     left={<TextInput.Affix text="#" />}
                 />
             </View>
