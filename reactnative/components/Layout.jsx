@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BottomNavigation, Text } from 'react-native-paper';
+import { BottomNavigation } from 'react-native-paper';
 import Values from '../pages/Values';
 import PaletteChoice from '../pages/PaletteChoice';
 import { Image } from 'react-native';

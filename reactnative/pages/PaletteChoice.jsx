@@ -1,7 +1,7 @@
 import { StyleSheet, View, Image, Pressable, Dimensions } from "react-native";
-import { TextInput, Text } from 'react-native-paper';
-import React, { useEffect, useState } from "react";
-import { convertRGBToCMYK, convertRGBToHex, convertRGBToHSV, convertHSVToRGB } from "./Calculator";
+import { Text } from 'react-native-paper';
+import React, { useState } from "react";
+import { convertHSVToRGB } from "./Calculator";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Square from "../components/Square";
 import { useColor } from "../components/ColorProvider";

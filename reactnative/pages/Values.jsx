@@ -1,9 +1,8 @@
 import { StyleSheet, View } from "react-native";
-import { TextInput, Text } from 'react-native-paper';
-import React, { useEffect } from "react";
+import { Text } from 'react-native-paper';
+import React from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Square from "../components/Square";
-import { useColor } from "../components/ColorProvider";
 import TextFields from "../components/TextFields";
 
 export default function Values() {
