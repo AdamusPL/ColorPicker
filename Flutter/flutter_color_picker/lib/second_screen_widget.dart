@@ -61,21 +61,8 @@ class _SecondScreenState extends State<SecondScreen> {
                     return '';
                 }
               },
-              onValueChange: (label, value) {
-                Color color = Color(colorModel.rgb.value);
-                value = value.isEmpty ? '0' : value;
-                switch (label) {
-                  case 'R':
-                    color = color.withRed(int.parse(value));
-                    break;
-                  case 'G':
-                    color = color.withGreen(int.parse(value));
-                    break;
-                  case 'B':
-                    color = color.withBlue(int.parse(value));
-                    break;
-                }
-                colorModel.setRGB(color);
+              onValueChange: (_, __) {
+                // Do nothing
               },
             ),
 
@@ -97,22 +84,8 @@ class _SecondScreenState extends State<SecondScreen> {
                     return '';
                 }
               },
-              onValueChange: (label, value) {
-                HSVColor hsvColor = colorModel.hsv;
-                value = value.isEmpty ? '0' : value;
-                switch (label) {
-                  case 'H':
-                    hsvColor = hsvColor.withHue(double.parse(value));
-                    break;
-                  case 'S':
-                    hsvColor =
-                        hsvColor.withSaturation(double.parse(value) / 100);
-                    break;
-                  case 'V':
-                    hsvColor = hsvColor.withValue(double.parse(value) / 100);
-                    break;
-                }
-                colorModel.setHSV(hsvColor);
+              onValueChange: (_, __) {
+                // Do nothing
               },
             ),
           
@@ -137,24 +110,8 @@ class _SecondScreenState extends State<SecondScreen> {
                     return '';
                 }
               },
-              onValueChange: (label, value) {
-                CMYKColor cmykColor = colorModel.cmyk;
-                value = value.isEmpty ? '0' : value;
-                switch (label) {
-                  case 'C':
-                    cmykColor = cmykColor.withCyan(int.parse(value));
-                    break;
-                  case 'M':
-                    cmykColor = cmykColor.withMagenta(int.parse(value));
-                    break;
-                  case 'Y':
-                    cmykColor = cmykColor.withYellow(int.parse(value));
-                    break;
-                  case 'K':
-                    cmykColor = cmykColor.withBlack(int.parse(value));
-                    break;
-                }
-                colorModel.setCMYK(cmykColor);
+              onValueChange: (_, __) {
+                // Do nothing
               },
             ),
           TextFieldRow(
@@ -165,9 +122,8 @@ class _SecondScreenState extends State<SecondScreen> {
               getValue: (label) {
                 return colorModel.hex;
               },
-              onValueChange: (label, value) {
-                if (value.length != 6) return;
-                colorModel.setHEX(value);
+              onValueChange: (_, __) {
+                // Do nothing
               },
             ),
         ],
