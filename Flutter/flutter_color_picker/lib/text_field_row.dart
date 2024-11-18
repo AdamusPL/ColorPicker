@@ -25,13 +25,21 @@ class TextFieldRow extends StatefulWidget {
 
 class TextFieldRowState extends State<TextFieldRow> {
   late List<TextEditingController> _controllers;
+  late List<String> _previousValues;
+  late List<FocusNode> _focusNodes;
 
   @override
   void initState() {
     super.initState();
     _controllers = List.generate(widget.textFieldCount, (index) {
-      
       return TextEditingController(text: '0');
+    });
+    _previousValues = List.generate(widget.textFieldCount, (index) {
+      return '0';
+    });
+
+    _focusNodes = List.generate(widget.textFieldCount, (index) {
+      return FocusNode();
     });
   }
 
@@ -49,12 +57,15 @@ class TextFieldRowState extends State<TextFieldRow> {
       width: double.infinity, // Ensures the Row takes up the full width
       child: Row(
         children: List.generate(widget.textFieldCount, (index) {
-          _controllers[index].text = widget.getValue(widget.labels[index]);
+          if (!_focusNodes[index].hasFocus) {
+            _controllers[index].text = widget.getValue(widget.labels[index]);
+          }
           return Expanded(
               child: Padding(
             padding: const EdgeInsets.all(4.0),
             child: TextField(
               controller: _controllers[index],
+              focusNode: _focusNodes[index],
               decoration: InputDecoration(
                 filled: true,
                 fillColor: purple40.withOpacity(0.1),
@@ -65,11 +76,13 @@ class TextFieldRowState extends State<TextFieldRow> {
               style: widget.style,
               readOnly: widget.readOnly,
               onChanged: (value) {
-                var toValidate = value.isNotEmpty ? value : '0'; 
-                if (validateChange(toValidate, widget.labels[index])) {
-                  widget.onValueChange(widget.labels[index], value);
+                if (validateChange(value, widget.labels[index])) {
+                  var toPass = value.isEmpty ? '0' : value;
+                  widget.onValueChange(widget.labels[index], toPass);
+                  _controllers[index].text = value;
+                  _previousValues[index] = value;
                 } else {
-                  _controllers[index].text = widget.getValue(widget.labels[index]);
+                  _controllers[index].text = _previousValues[index];
                 }
               },
             ),
@@ -110,7 +123,7 @@ class TextFieldRowState extends State<TextFieldRow> {
 
   bool validateChange(String value, String label) {
     if (value.isEmpty) {
-      return false;
+      return true;
     }
     switch (label) {
       case 'R':
