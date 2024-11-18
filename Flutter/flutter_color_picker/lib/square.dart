@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_color_picker/colorModel.dart';
+import 'package:flutter_color_picker/color_model.dart';
 import 'package:provider/provider.dart';
 
 class Square extends StatefulWidget {
@@ -16,7 +16,7 @@ class _SquareState extends State<Square> {
 
     Color squareColor = colorModel.rgb;
     return Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(12),
         child: AspectRatio(
             aspectRatio: 1.0,
             child: Card(

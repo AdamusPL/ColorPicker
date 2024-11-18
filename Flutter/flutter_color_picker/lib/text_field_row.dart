@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_color_picker/color.dart';
-import 'package:flutter_color_picker/colorModel.dart';
-import 'package:provider/provider.dart';
 
 class TextFieldRow extends StatefulWidget {
-  TextFieldRow({
+  const TextFieldRow({
     super.key,
     required this.labels,
     required this.style,
     required this.textFieldCount,
     required this.getValue,
     required this.onValueChange,
+    required this.readOnly,
   });
 
   final List<String> labels;
@@ -18,12 +17,13 @@ class TextFieldRow extends StatefulWidget {
   final int textFieldCount;
   final String Function(String) getValue;
   final void Function(String, String) onValueChange;
+  final bool readOnly;
 
   @override
-  _TextFieldRowState createState() => _TextFieldRowState();
+  TextFieldRowState createState() => TextFieldRowState();
 }
 
-class _TextFieldRowState extends State<TextFieldRow> {
+class TextFieldRowState extends State<TextFieldRow> {
   late List<TextEditingController> _controllers;
 
   @override
@@ -45,8 +45,6 @@ class _TextFieldRowState extends State<TextFieldRow> {
 
   @override
   Widget build(BuildContext context) {
-    ColorModel colorModel = Provider.of<ColorModel>(context);
-    
     return SizedBox(
       width: double.infinity, // Ensures the Row takes up the full width
       child: Row(
@@ -65,6 +63,7 @@ class _TextFieldRowState extends State<TextFieldRow> {
                 prefixText: getPrefix(widget.labels, index),
               ),
               style: widget.style,
+              readOnly: widget.readOnly,
               onChanged: (value) {
                 var toValidate = value.isNotEmpty ? value : '0'; 
                 if (validateChange(toValidate, widget.labels[index])) {

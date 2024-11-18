@@ -15,7 +15,7 @@ class CirclePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     canvas.drawOval(
-      Rect.fromLTWH(locationX, locationY, size.width, size.height),
+      Rect.fromLTWH(locationX - size.width / 2, locationY - size.height / 2, size.width, size.height),
       _paint,
     );
   }

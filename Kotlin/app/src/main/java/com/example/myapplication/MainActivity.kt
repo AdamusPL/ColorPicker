@@ -14,8 +14,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -33,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -139,6 +138,7 @@ fun BottomNavigationBar(navController: NavHostController) {
                     Text(
                         text = "Konwerter",
                         color = if (selectedIndex == 0) Color(0xFFFFC107) else Color.Gray,
+                        fontSize = 12.sp
                     )
                 }
             }
@@ -163,6 +163,7 @@ fun BottomNavigationBar(navController: NavHostController) {
                     Text(
                         text = "Paleta",
                         color = if (selectedIndex == 1) Color(0xFFFFC107) else Color.Gray,
+                        fontSize = 12.sp
                     )
                 }
             }
