@@ -12,7 +12,7 @@ const Layout = () => {
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
     { key: 'values', 
-      title: 'Values', 
+      title: 'Konwerter', 
       focusedIcon: ({ size, color }) => (
         <Image
           source={require('./images/calculate.png')}
@@ -22,7 +22,7 @@ const Layout = () => {
       unfocusedIcon: require('./images/calculate.png')  
     },
     { key: 'palette', 
-      title: 'Palette',
+      title: 'Paleta',
       focusedIcon: ({ size, color }) => (
         <Image
           source={require('./images/palette.png')}

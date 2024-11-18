@@ -288,8 +288,8 @@ const styles = StyleSheet.create({
     },
 
     square: {
-        width: 100,
-        height: 100,
+        width: 70,
+        height: 70,
         marginTop: 30
     },
 
@@ -302,8 +302,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 101,
-        width: '100%',
-        height: '100%',
+        width: 202,
+        height: 202,
     },
 
     centered: {
