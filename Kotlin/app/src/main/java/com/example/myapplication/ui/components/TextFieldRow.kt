@@ -13,7 +13,12 @@ import androidx.compose.ui.unit.dp
 import com.example.myapplication.MainViewModel
 
 @Composable
-fun TextFieldRow(values: SnapshotStateList<String>, labels: List<String> = emptyList(), viewModel: MainViewModel, readOnly : Boolean = true) {
+fun TextFieldRow(
+    values: SnapshotStateList<String>,
+    labels: List<String> = emptyList(),
+    viewModel: MainViewModel,
+    readOnly: Boolean = true
+) {
     Row(modifier = Modifier.fillMaxWidth()) {
         values.forEachIndexed { index, value ->
             val label = labels.getOrNull(index) ?: "TextField ${index + 1}"
@@ -26,7 +31,9 @@ fun TextFieldRow(values: SnapshotStateList<String>, labels: List<String> = empty
                     }
                 },
                 label = { Text(getLabel(labels, index)) },
-                modifier = Modifier.weight(1f).padding(4.dp),
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(4.dp),
                 singleLine = true,
                 suffix = { Text(getSuffix(label)) },
                 prefix = { Text(getPrefix(label)) },
@@ -38,11 +45,28 @@ fun TextFieldRow(values: SnapshotStateList<String>, labels: List<String> = empty
 
 fun isValidInput(label: String, input: String): Boolean {
     return when (label) {
-        "R", "G", "B" -> input.isBlank() || input.toIntOrNull()?.let { it in 0..255 } ?: false
-        "H" -> input.isBlank() || input.toDoubleOrNull()?.let { it in 0.0..360.0 } ?: false
-        "S", "V", "C", "M", "Y", "K" -> input.isBlank() || input.toDoubleOrNull()?.let { it in 0.0..100.0 } ?: false
-        "HEX" -> input.matches(Regex("^[A-Fa-f0-9]{0,6}$"))
-        else -> true
+        "R", "G", "B" -> {
+            input.isBlank() || (input.toIntOrNull()
+                ?.let { it in 0..255 } == true && input.length in 0..3)
+        }
+
+        "H" -> {
+            input.isBlank() || (input.toDoubleOrNull()
+                ?.let { it in 0.0..360.0 } == true && input.length in 0..3)
+        }
+
+        "S", "V", "C", "M", "Y", "K" -> {
+            input.isBlank() || (input.toDoubleOrNull()
+                ?.let { it in 0.0..100.0 } == true && input.length in 0..3)
+        }
+
+        "HEX" -> {
+            input.matches(Regex("^[A-Fa-f0-9]{0,6}$"))
+        }
+
+        else -> {
+            true
+        }
     }
 }
 

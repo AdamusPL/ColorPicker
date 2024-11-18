@@ -131,23 +131,27 @@ class TextFieldRowState extends State<TextFieldRow> {
       case 'B':
         return int.tryParse(value) != null &&
             int.parse(value) >= 0 &&
-            int.parse(value) <= 255;
+            int.parse(value) <= 255 &&
+            value.length <= 3;
       case 'H':
         return double.tryParse(value) != null &&
             double.parse(value) >= 0 &&
-            double.parse(value) <= 360;
+            double.parse(value) <= 360 && 
+            value.length <= 3;
       case 'S':
       case 'V':
         return double.tryParse(value) != null &&
             double.parse(value) >= 0 &&
-            double.parse(value) <= 100;
+            double.parse(value) <= 100 &&
+            value.length <= 3;
       case 'C':
       case 'M':
       case 'Y':
       case 'K':
         return double.tryParse(value) != null &&
             double.parse(value) >= 0 &&
-            double.parse(value) <= 100;
+            double.parse(value) <= 100 &&
+            value.length <= 3;
       case 'HEX':
         return RegExp(r"^[A-Fa-f0-9]{0,6}$").hasMatch(value);
       default:
