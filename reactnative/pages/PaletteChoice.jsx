@@ -9,7 +9,6 @@ import TextFields from "../components/TextFields";
 
 export default function PaletteChoice() {
     const { selectedColor, setSelectedColor } = useColor();
-    const { width, height } = Dimensions.get('window');
     const [pressableCenterPosition, setPressableCenterPosition] = useState({ x: 0, y: 0 });
     const [pressableWidth, setPressableWidth] = useState(0);
     const [circlePosition, setCirclePosition] = useState({ x: 0, y: 0});
@@ -49,16 +48,16 @@ export default function PaletteChoice() {
 
             setCirclePosition({ x: pageX, y: pageY });
         }else{
-            console.log("centerX: ", centerX);
-            console.log("centerY: ", centerY);
-            console.log("pageX: ", pageX);
-            console.log("pageY: ", pageY);
-            console.log("locationX - centerX pow: ", Math.pow(pageX - centerX, 2));
-            console.log("locationY - centerY pow: ", Math.pow(pageY - centerY, 2));
-            console.log("sqrt: ", Math.sqrt(Math.pow(pageX - centerX, 2) + Math.pow(pageY - centerY, 2)));
-            console.log("distance: ", distance);
-            console.log("radius: ", radius);
-            console.log("out of range");  
+            // console.log("centerX: ", centerX);
+            // console.log("centerY: ", centerY);
+            // console.log("pageX: ", pageX);
+            // console.log("pageY: ", pageY);
+            // console.log("locationX - centerX pow: ", Math.pow(pageX - centerX, 2));
+            // console.log("locationY - centerY pow: ", Math.pow(pageY - centerY, 2));
+            // console.log("sqrt: ", Math.sqrt(Math.pow(pageX - centerX, 2) + Math.pow(pageY - centerY, 2)));
+            // console.log("distance: ", distance);
+            // console.log("radius: ", radius);
+            // console.log("out of range");  
         }
 
     };
@@ -136,13 +135,6 @@ const styles = StyleSheet.create({
         marginRight: 15,
         marginTop: 20,
         marginBottom: 30
-    },
-
-    square: {
-        width: 70,
-        height: 70,
-        marginTop: 5,
-        marginBottom: 10
     },
 
     centeredSquare: {
