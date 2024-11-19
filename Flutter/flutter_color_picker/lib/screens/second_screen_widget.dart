@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_color_picker/color_model.dart';
-import 'package:flutter_color_picker/models/cmykcolor.dart';
-import 'package:flutter_color_picker/square.dart';
-import 'package:flutter_color_picker/text_field_row.dart';
+import 'package:flutter_color_picker/models/color_model.dart';
+import 'package:flutter_color_picker/components/square.dart';
+import 'package:flutter_color_picker/components/text_field_row.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_color_picker/color_palette.dart';
+import 'package:flutter_color_picker/components/color_palette.dart';
 
 class SecondScreen extends StatefulWidget {
   const SecondScreen({super.key});
@@ -43,7 +42,6 @@ class _SecondScreenState extends State<SecondScreen> {
           ),
 
           // RGB Fields
-          
           TextFieldRow(
               labels: const ['R', 'G', 'B'],
               style: const TextStyle(fontSize: 20),
@@ -61,9 +59,6 @@ class _SecondScreenState extends State<SecondScreen> {
                     return '';
                 }
               },
-              onValueChange: (_, __) {
-                // Do nothing
-              },
             ),
 
           // HSV Fields
@@ -75,17 +70,25 @@ class _SecondScreenState extends State<SecondScreen> {
               getValue: (label) {
                 switch (label) {
                   case 'H':
-                    return colorModel.hsv.hue.toStringAsFixed(0);
+                    return colorModel.hsv.hue.toStringAsFixed(2);
                   case 'S':
-                    return (colorModel.hsv.saturation * 100).toStringAsFixed(0);
+                    return (colorModel.hsv.saturation * 100).toStringAsFixed(2);
                   case 'V':
-                    return (colorModel.hsv.value * 100).toStringAsFixed(0);
+                    return (colorModel.hsv.value * 100).toStringAsFixed(2);
                   default:
                     return '';
                 }
               },
-              onValueChange: (_, __) {
-                // Do nothing
+              getSuffix: (label) {
+                switch(label) {
+                  case 'H':
+                    return '°';
+                  case 'S':
+                  case 'V':
+                    return '%';
+                  default:
+                    return '';
+                }
               },
             ),
           
@@ -110,9 +113,7 @@ class _SecondScreenState extends State<SecondScreen> {
                     return '';
                 }
               },
-              onValueChange: (_, __) {
-                // Do nothing
-              },
+              getSuffix: (_) => '%',
             ),
           TextFieldRow(
               labels: const ['HEX'],
@@ -122,9 +123,7 @@ class _SecondScreenState extends State<SecondScreen> {
               getValue: (label) {
                 return colorModel.hex;
               },
-              onValueChange: (_, __) {
-                // Do nothing
-              },
+              getPrefix: (_) => '#',
             ),
         ],
       ),

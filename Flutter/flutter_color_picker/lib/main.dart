@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_color_picker/main_screen_widget.dart';
-import 'package:flutter_color_picker/second_screen_widget.dart';
-import 'package:flutter_color_picker/color.dart';
+import 'package:flutter_color_picker/screens/main_screen_widget.dart';
+import 'package:flutter_color_picker/screens/second_screen_widget.dart';
+import 'package:flutter_color_picker/theme/color.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_color_picker/color_model.dart';
+import 'package:flutter_color_picker/models/color_model.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 void main() {
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: lightTheme,
       darkTheme: darkTheme,
-      themeMode: ThemeMode.light, // Use system theme mode
+      themeMode: ThemeMode.light,
       home: const MyHomePage(
         title: 'Color Picker',
       ),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_color_picker/color.dart';
+import 'package:flutter_color_picker/theme/color.dart';
 
 class TextFieldRow extends StatefulWidget {
   const TextFieldRow({
@@ -8,17 +8,24 @@ class TextFieldRow extends StatefulWidget {
     required this.style,
     required this.textFieldCount,
     required this.getValue,
-    required this.onValueChange,
     required this.readOnly,
+    this.onValueChange,
+    this.getPrefix,
+    this.getSuffix,
+    this.validateChange
   });
 
   final List<String> labels;
   final TextStyle style;
   final int textFieldCount;
   final String Function(String) getValue;
-  final void Function(String, String) onValueChange;
   final bool readOnly;
-
+  final void Function(String, String)? onValueChange;
+  final String Function(String)? getPrefix;
+  final String Function(String)? getSuffix;
+  final bool Function(String, String)? validateChange;
+  
+  
   @override
   TextFieldRowState createState() => TextFieldRowState();
 }
@@ -27,6 +34,18 @@ class TextFieldRowState extends State<TextFieldRow> {
   late List<TextEditingController> _controllers;
   late List<String> _previousValues;
   late List<FocusNode> _focusNodes;
+
+  String _getPrefix(String label) {
+    return widget.getPrefix != null ? widget.getPrefix!(label) : '';
+  }
+
+  String _getSuffix(String label) {
+    return widget.getSuffix != null ? widget.getSuffix!(label) : '';
+  }
+
+  bool _validateChange(String label, String value) {
+    return widget.validateChange != null ? widget.validateChange!(label, value) : true;
+  }
 
   @override
   void initState() {
@@ -57,7 +76,7 @@ class TextFieldRowState extends State<TextFieldRow> {
       width: double.infinity, // Ensures the Row takes up the full width
       child: Row(
         children: List.generate(widget.textFieldCount, (index) {
-          if (!_focusNodes[index].hasFocus) {
+          if (!_focusNodes[index].hasFocus || widget.readOnly) {
             _controllers[index].text = widget.getValue(widget.labels[index]);
           }
           return Expanded(
@@ -70,15 +89,15 @@ class TextFieldRowState extends State<TextFieldRow> {
                 filled: true,
                 fillColor: purple40.withOpacity(0.1),
                 labelText: widget.labels[index],
-                suffixText: getSuffix(widget.labels, index),
-                prefixText: getPrefix(widget.labels, index),
+                suffixText: _getSuffix(widget.labels[index]),
+                prefixText: _getPrefix(widget.labels[index]),
               ),
               style: widget.style,
               readOnly: widget.readOnly,
               onChanged: (value) {
-                if (validateChange(value, widget.labels[index])) {
+                if (_validateChange(widget.labels[index], value)) {
                   var toPass = value.isEmpty ? '0' : value;
-                  widget.onValueChange(widget.labels[index], toPass);
+                  widget.onValueChange!(widget.labels[index], toPass);
                   _controllers[index].text = value;
                   _previousValues[index] = value;
                 } else {
@@ -90,72 +109,5 @@ class TextFieldRowState extends State<TextFieldRow> {
         }),
       ),
     );
-  }
-
-  String getSuffix(text, index) {
-    switch (text[index]) {
-      case 'H':
-        return '°';
-      case 'S':
-        return '%';
-      case 'V':
-        return '%';
-      case 'C':
-        return '%';
-      case 'M':
-        return '%';
-      case 'Y':
-        return '%';
-      case 'K':
-        return '%';
-      default:
-        return '';
-    }
-  }
-
-  String getPrefix(text, index) {
-    if (text[index] == 'HEX') {
-      return '#';
-    } else {
-      return '';
-    }
-  }
-
-  bool validateChange(String value, String label) {
-    if (value.isEmpty) {
-      return true;
-    }
-    switch (label) {
-      case 'R':
-      case 'G':
-      case 'B':
-        return int.tryParse(value) != null &&
-            int.parse(value) >= 0 &&
-            int.parse(value) <= 255 &&
-            value.length <= 3;
-      case 'H':
-        return double.tryParse(value) != null &&
-            double.parse(value) >= 0 &&
-            double.parse(value) <= 360 && 
-            value.length <= 3;
-      case 'S':
-      case 'V':
-        return double.tryParse(value) != null &&
-            double.parse(value) >= 0 &&
-            double.parse(value) <= 100 &&
-            value.length <= 3;
-      case 'C':
-      case 'M':
-      case 'Y':
-      case 'K':
-        return double.tryParse(value) != null &&
-            double.parse(value) >= 0 &&
-            double.parse(value) <= 100 &&
-            value.length <= 3;
-      case 'HEX':
-        return RegExp(r"^[A-Fa-f0-9]{0,6}$").hasMatch(value);
-      default:
-        return false;
-    }
   }
 }

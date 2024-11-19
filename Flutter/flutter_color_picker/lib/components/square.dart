@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_color_picker/color_model.dart';
+import 'package:flutter_color_picker/models/color_model.dart';
 import 'package:provider/provider.dart';
 
 class Square extends StatefulWidget {
