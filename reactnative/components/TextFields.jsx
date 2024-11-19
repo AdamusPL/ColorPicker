@@ -280,7 +280,7 @@ export default function TextFields({ isReadOnly }) {
                     label="V"
                     value={v}
                     readOnly={isReadOnly}
-                    maxLength={3}
+                    maxLength={6}
                     onChangeText={(x) => {
                         if (!isReadOnly) {
                             if (x >= 0 && x <= 100) {

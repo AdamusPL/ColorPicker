@@ -48,28 +48,53 @@ fun SecondScreen(viewModel: MainViewModel, innerPadding: PaddingValues) {
             viewModel.rgbFieldValues,
             listOf("R", "G", "B"),
             viewModel,
-            true
+            true,
+            isValidInput = { _, input ->
+                input.isBlank() || (input.toIntOrNull()
+                    ?.let { it in 0..255 } == true && input.length in 0..3)
+            }
         )
         TextFieldRow(
             viewModel.hsvFieldValues,
             listOf("H", "S", "V"),
             viewModel,
             true,
-            getSuffix = { if (it == "H") "°" else "%" }
+            getSuffix = { if (it == "H") "°" else "%" },
+            isValidInput = { label, input ->
+                when (label) {
+                    "H" -> {
+                        input.isBlank() || (input.toDoubleOrNull()
+                            ?.let { it in 0.0..360.0 } == true && input.length in 0..6)
+                    }
+
+                    "S", "V" -> {
+                        input.isBlank() || (input.toDoubleOrNull()
+                            ?.let { it in 0.0..100.0 } == true && input.length in 0..6)
+                    }
+                    else -> true
+                }
+            }
         )
         TextFieldRow(
             viewModel.cmykFieldValues,
             listOf("C", "M", "Y", "K"),
             viewModel,
             true,
-            getSuffix = { "%" }
+            getSuffix = { "%" },
+            isValidInput = { _, input ->
+                input.isBlank() || (input.toIntOrNull()
+                    ?.let { it in 0..100 } == true && input.length in 0..3)
+            }
         )
         TextFieldRow(
             viewModel.hexFieldValues,
             listOf("HEX"),
             viewModel,
             true,
-            getPrefix = { "#" }
+            getPrefix = { "#" },
+            isValidInput = { _, input ->
+                input.matches(Regex("^[A-Fa-f0-9]{0,6}$"))
+            }
         )
     }
 }

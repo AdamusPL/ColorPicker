@@ -20,7 +20,7 @@ fun TextFieldRow(
     readOnly: Boolean = true,
     getPrefix: (String) -> String = { "" },
     getSuffix: (String) -> String = { "" },
-) {
+    isValidInput: (String, String) -> Boolean = { _, _ -> true }) {
     Row(modifier = Modifier.fillMaxWidth()) {
         values.forEachIndexed { index, value ->
             val label = labels.getOrNull(index) ?: "TextField ${index + 1}"
@@ -41,33 +41,6 @@ fun TextFieldRow(
                 prefix = { Text(getPrefix(label)) },
                 readOnly = readOnly
             )
-        }
-    }
-}
-
-fun isValidInput(label: String, input: String): Boolean {
-    return when (label) {
-        "R", "G", "B" -> {
-            input.isBlank() || (input.toIntOrNull()
-                ?.let { it in 0..255 } == true && input.length in 0..3)
-        }
-
-        "H" -> {
-            input.isBlank() || (input.toDoubleOrNull()
-                ?.let { it in 0.0..360.0 } == true && input.length in 0..5)
-        }
-
-        "S", "V", "C", "M", "Y", "K" -> {
-            input.isBlank() || (input.toDoubleOrNull()
-                ?.let { it in 0.0..100.0 } == true && input.length in 0..5)
-        }
-
-        "HEX" -> {
-            input.matches(Regex("^[A-Fa-f0-9]{0,6}$"))
-        }
-
-        else -> {
-            true
         }
     }
 }
