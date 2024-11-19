@@ -211,7 +211,7 @@ export default function TextFields({ isReadOnly }) {
                     value={r}
                     readOnly={isReadOnly}
                     maxLength={3}
-                    onChangeText={x => {
+                    onChangeText={(x) => {
                         if (!isReadOnly) {
                             if (x >= 0 && x <= 255) {
                                 handleRGBChange(x, 'r');
@@ -224,7 +224,7 @@ export default function TextFields({ isReadOnly }) {
                     value={g}
                     readOnly={isReadOnly}
                     maxLength={3}
-                    onChangeText={x => {
+                    onChangeText={(x) => {
                         if (!isReadOnly) {
                             if (x >= 0 && x <= 255) {
                                 handleRGBChange(x, 'g');
@@ -237,7 +237,7 @@ export default function TextFields({ isReadOnly }) {
                     value={b}
                     readOnly={isReadOnly}
                     maxLength={3}
-                    onChangeText={x => {
+                    onChangeText={(x) => {
                         if (!isReadOnly) {
                             if (x >= 0 && x <= 255) {
                                 handleRGBChange(x, 'b');
@@ -252,8 +252,8 @@ export default function TextFields({ isReadOnly }) {
                     label="H"
                     value={h}
                     readOnly={isReadOnly}
-                    maxLength={3}
-                    onChangeText={x => {
+                    maxLength={6}
+                    onChangeText={(x) => {
                         if (!isReadOnly) {
                             if (x >= 0 && x <= 100) {
                                 handleHSVChange(x, 'h');
@@ -266,8 +266,8 @@ export default function TextFields({ isReadOnly }) {
                     label="S"
                     value={s}
                     readOnly={isReadOnly}
-                    maxLength={3}
-                    onChangeText={x => {
+                    maxLength={6}
+                    onChangeText={(x) => {
                         if (!isReadOnly) {
                             if (x >= 0 && x <= 100) {
                                 handleHSVChange(x, 's');
@@ -281,7 +281,7 @@ export default function TextFields({ isReadOnly }) {
                     value={v}
                     readOnly={isReadOnly}
                     maxLength={3}
-                    onChangeText={x => {
+                    onChangeText={(x) => {
                         if (!isReadOnly) {
                             if (x >= 0 && x <= 100) {
                                 handleHSVChange(x, 'v');
@@ -298,7 +298,7 @@ export default function TextFields({ isReadOnly }) {
                     value={c}
                     readOnly={isReadOnly}
                     maxLength={3}
-                    onChangeText={x => {
+                    onChangeText={(x) => {
                         if (!isReadOnly) {
                             if (x >= 0 && x <= 100) {
                                 handleCMYKChange(x, 'c');
@@ -312,7 +312,7 @@ export default function TextFields({ isReadOnly }) {
                     value={m}
                     readOnly={isReadOnly}
                     maxLength={3}
-                    onChangeText={x => {
+                    onChangeText={(x) => {
                         if (!isReadOnly) {
                             if (x >= 0 && x <= 100) {
                                 handleCMYKChange(x, 'm');
@@ -326,7 +326,7 @@ export default function TextFields({ isReadOnly }) {
                     value={y}
                     readOnly={isReadOnly}
                     maxLength={3}
-                    onChangeText={x => {
+                    onChangeText={(x) => {
                         if (!isReadOnly) {
                             if (x >= 0 && x <= 100) {
                                 handleCMYKChange(x, 'y');
@@ -340,7 +340,7 @@ export default function TextFields({ isReadOnly }) {
                     value={k}
                     readOnly={isReadOnly}
                     maxLength={3}
-                    onChangeText={x => {
+                    onChangeText={(x) => {
                         if (!isReadOnly) {
                             if (x >= 0 && x <= 100) {
                                 handleCMYKChange(x, 'k');
@@ -357,7 +357,7 @@ export default function TextFields({ isReadOnly }) {
                     value={hex}
                     readOnly={isReadOnly}
                     maxLength={6}
-                    onChangeText={x => {
+                    onChangeText={(x) => {
                         if (!isReadOnly) {
                             const regex = /^[A-Fa-f0-9]{0,6}$/;
                             if (regex.test(x)) {
