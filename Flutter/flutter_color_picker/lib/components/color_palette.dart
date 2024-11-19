@@ -25,7 +25,7 @@ class _ColorPaletteState extends State<ColorPalette> {
 
   Future<void> _loadImage() async {
     final data =
-        await DefaultAssetBundle.of(context).load('lib/images/color_wheel.png');
+        await DefaultAssetBundle.of(context).load('lib/assets/color_wheel.png');
     final bytes = data.buffer.asUint8List();
     final codec = await ui.instantiateImageCodec(bytes);
     final frame = await codec.getNextFrame();

@@ -81,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
-              'lib/images/calculate.svg',
+              'lib/assets/calculate.svg',
               colorFilter: ColorFilter.mode(
                 _selectedIndex == 0 ? Colors.amber[800]! : Colors.grey,
                 BlendMode.srcIn,
@@ -91,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
-              'lib/images/palette.svg',
+              'lib/assets/palette.svg',
               colorFilter: ColorFilter.mode(
                 _selectedIndex == 1 ? Colors.amber[800]! : Colors.grey,
                 BlendMode.srcIn,

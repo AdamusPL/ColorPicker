@@ -57,9 +57,9 @@ dev_dependencies:
 flutter:
 
   assets:
-    - lib/images/color_wheel.png
-    - lib/images/calculate.svg
-    - lib/images/palette.svg
+    - lib/assets/color_wheel.png
+    - lib/assets/calculate.svg
+    - lib/assets/palette.svg
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

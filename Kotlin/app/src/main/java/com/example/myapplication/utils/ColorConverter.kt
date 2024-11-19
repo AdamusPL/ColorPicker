@@ -20,7 +20,7 @@ class ColorConverter {
             if (delta == 0.0) {
                 h = 0.0
             } else if (cmax == rp) {
-                h = 60.0 * (((gp - bp) / delta) % 6.0)
+                h = 60.0 * floorMod(((gp - bp) / delta), 6.0)
             } else if (cmax == gp) {
                 h = 60.0 * (((bp - rp) / delta) + 2.0)
             } else if (cmax == bp) {
@@ -91,6 +91,10 @@ class ColorConverter {
 
         private fun String.removeTrailingZeros(): String {
             return this.replace(Regex("\\.?0*$"), "")
+        }
+
+        private fun floorMod(x: Double, y: Double): Double {
+            return ((x % y) + y) % y
         }
     }
 }

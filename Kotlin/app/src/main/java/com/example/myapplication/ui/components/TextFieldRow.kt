@@ -17,7 +17,9 @@ fun TextFieldRow(
     values: SnapshotStateList<String>,
     labels: List<String> = emptyList(),
     viewModel: MainViewModel,
-    readOnly: Boolean = true
+    readOnly: Boolean = true,
+    getPrefix: (String) -> String = { "" },
+    getSuffix: (String) -> String = { "" },
 ) {
     Row(modifier = Modifier.fillMaxWidth()) {
         values.forEachIndexed { index, value ->
@@ -73,21 +75,4 @@ fun isValidInput(label: String, input: String): Boolean {
 @Composable
 fun getLabel(labels: List<String>, index: Int): String {
     return labels.getOrNull(index) ?: "TextField ${index + 1}"
-}
-
-@Composable
-fun getPrefix(label: String): String {
-    return when (label) {
-        "HEX" -> "#"
-        else -> ""
-    }
-}
-
-@Composable
-fun getSuffix(label: String): String {
-    return when (label) {
-        "H" -> "°"
-        "S", "V", "C", "M", "Y", "K" -> "%"
-        else -> ""
-    }
 }

@@ -120,4 +120,3 @@ private fun handleTouch(offset: Offset, size: IntSize, bitmap: android.graphics.
     }
     return lastTouchPosition
 }
-
