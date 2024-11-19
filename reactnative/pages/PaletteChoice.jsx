@@ -28,13 +28,6 @@ export default function PaletteChoice() {
         const distance = Math.sqrt(Math.pow(pageX - centerX, 2) + Math.pow(pageY - centerY, 2));
         const angle = Math.atan2(pageY - centerY, pageX - centerX) * (180 / Math.PI);
 
-        // console.log("locationX", locationX)
-        // console.log("locationY", locationY)
-        // console.log("centerX", centerX)
-        // console.log("distance", distance)
-        // console.log("angle", angle);
-        // console.log("");
-
         if (distance <= radius) {
             const hue = (angle + 360) % 360;
 
@@ -47,17 +40,6 @@ export default function PaletteChoice() {
             setSelectedColor(`rgb(${r}, ${g}, ${b})`);
 
             setCirclePosition({ x: pageX, y: pageY });
-        }else{
-            // console.log("centerX: ", centerX);
-            // console.log("centerY: ", centerY);
-            // console.log("pageX: ", pageX);
-            // console.log("pageY: ", pageY);
-            // console.log("locationX - centerX pow: ", Math.pow(pageX - centerX, 2));
-            // console.log("locationY - centerY pow: ", Math.pow(pageY - centerY, 2));
-            // console.log("sqrt: ", Math.sqrt(Math.pow(pageX - centerX, 2) + Math.pow(pageY - centerY, 2)));
-            // console.log("distance: ", distance);
-            // console.log("radius: ", radius);
-            // console.log("out of range");  
         }
 
     };
@@ -78,7 +60,7 @@ export default function PaletteChoice() {
     }
 
     function handleLayoutDemo(event) {
-        const {  x, y  } = event.nativeEvent.layout;
+        const { x, y } = event.nativeEvent.layout;
         const previousX = pressableCenterPosition.x;
         const previousY = pressableCenterPosition.y;
         setPressableCenterPosition({ x: x + previousX, y: y + previousY });
